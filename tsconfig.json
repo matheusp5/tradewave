@@ -8,15 +8,25 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "types": ["vitest/globals"],
-    "baseUrl": "./"
+    "types": [
+      "jest",
+      "@types/jest"
+    ],
+    "baseUrl": "./",
+    "resolveJsonModule": true
   },
   "ts-node-dev": {
-    "require": ["tsconfig-paths/register"]
+    "require": [
+      "tsconfig-paths/register"
+    ]
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
+    "require": [
+      "tsconfig-paths/register"
+    ]
   }
 }
