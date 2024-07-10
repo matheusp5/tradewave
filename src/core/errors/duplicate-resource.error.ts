@@ -1,5 +1,5 @@
 export class DuplicateResourceError extends Error {
-    constructor(message?: string) {
-        super(message || 'duplicate')
-    }
+  constructor(message?: string) {
+    super(message || 'duplicate')
+  }
 }

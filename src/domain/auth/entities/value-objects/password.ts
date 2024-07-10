@@ -2,36 +2,38 @@ import { BadRequestError } from '@/core/errors/bad-request.error'
 import bcrypt from 'bcrypt'
 
 export class Password {
-    private static PASSWORD_SALT_ROUNDS: number = 6 as const
-    public hash: string
+  private static PASSWORD_SALT_ROUNDS: number = 6 as const
+  public hash: string
 
-    private constructor(password: string) {
-        this.hash = password
+  private constructor(password: string) {
+    this.hash = password
+  }
+
+  static loadPassword(hash: string): Password {
+    return new Password(hash)
+  }
+
+  static createNewPassword(password: string): Password {
+    if (!this.isPasswordValid(password)) {
+      throw new BadRequestError(
+        'Senha inválida. A senha conter ao menos 6 caracteres.'
+      )
     }
 
-    static loadPassword(hash: string): Password {
-        return new Password(hash)
-    }
+    return new Password(this.generateHash(password))
+  }
 
-    static createNewPassword(password: string): Password {
-        if (!this.isPasswordValid(password)) {
-            throw new BadRequestError('Senha inválida. A senha conter ao menos 6 caracteres.')
-        }
+  private static isPasswordValid(password: string): boolean {
+    if (!password || password.trim().length < 6) return false
 
-        return new Password(this.generateHash(password))
-    }
+    return true
+  }
 
-    private static isPasswordValid(password: string): boolean {
-        if (!password || password.trim().length < 6) return false
+  public async comparePasswords(plainTextPassword: string): Promise<boolean> {
+    return await bcrypt.compare(plainTextPassword, this.hash)
+  }
 
-        return true
-    }
-
-    public async comparePasswords(plainTextPassword: string): Promise<boolean> {
-        return await bcrypt.compare(plainTextPassword, this.hash)
-    }
-
-    private static generateHash(plainPassword: string): string {
-        return bcrypt.hashSync(plainPassword, Password.PASSWORD_SALT_ROUNDS)
-    }
+  private static generateHash(plainPassword: string): string {
+    return bcrypt.hashSync(plainPassword, Password.PASSWORD_SALT_ROUNDS)
+  }
 }
