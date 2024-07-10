@@ -9,8 +9,6 @@ export interface IAccountProps {
     username: string
     email: string
     password: Password
-    isSuper: boolean
-    isEmailVerified: boolean
     createdAt: Date
     updatedAt: Date
 }
@@ -38,14 +36,6 @@ export class Account extends BaseEntity<IAccountProps> {
 
     get email() {
         return this.props.email
-    }
-
-    get isSuper() {
-        return this.props.isSuper
-    }
-
-    get isEmailVerified() {
-        return this.props.isEmailVerified
     }
 
     get createdAt() {
@@ -80,24 +70,6 @@ export class Account extends BaseEntity<IAccountProps> {
 
     changeEmail(email: string) {
         this.props.email = email
-        this.touch()
-    }
-
-    changeSuperRole(requester: Account, isSuper: boolean) {
-        // Only a super user can change the isSuper property
-        if (requester.isSuper) {
-            // Only the user himself can change his isSuper property
-            if (requester.id !== this.id) {
-                return
-            }
-
-            this.props.isSuper = isSuper
-            this.touch()
-        }
-    }
-
-    changeEmailVerification(isEmailVerified: boolean) {
-        this.props.isEmailVerified = isEmailVerified
         this.touch()
     }
 
