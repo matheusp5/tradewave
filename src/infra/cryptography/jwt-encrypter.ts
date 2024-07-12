@@ -26,10 +26,14 @@ export class JwtEncrypter implements IEncrypter {
     }
 
     decrypt({ token }: IDecryptRequest): IDecryptResponse {
-        const decryptedToken = jwt.verify(token, this.secret)
+        try {
+            const decryptedToken = jwt.verify(token, this.secret)
 
-        if (!decryptedToken.sub) throw new UnauthorizedError('Token inválido')
+            if (!decryptedToken.sub) throw new UnauthorizedError('Token inválido')
 
-        return decryptedToken as IDecryptResponse
+            return decryptedToken as IDecryptResponse
+        } catch (error) {
+            throw new UnauthorizedError('Token inválido')
+        }
     }
 }
