@@ -8,5 +8,4 @@ export interface IAccountRepository {
     getByUsername(username: string): Promise<Account | null>
     create(account: ICreateAccountDTO): Promise<Account>
     deleteById(id: string): Promise<void>
-    updateById(id: string, account: ICreateAccountDTO): Promise<Account>
 }
