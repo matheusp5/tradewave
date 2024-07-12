@@ -1,6 +1,6 @@
 import { TokenType } from "@/core/enums/token-type";
 import { UnauthorizedError } from "@/core/errors/unauthorized.error";
-import { IDecryptRequest, IDecryptResponse, IEncrypter, IEncrypterResponse, IEncryptRequest } from "@/domain/auth/cryptography/encrypter";
+import { IDecryptRequest, IDecryptResponse, IEncrypter, IEncryptResponse, IEncryptRequest } from "@/domain/auth/cryptography/encrypter";
 import jwt from "jsonwebtoken"
 import moment from "moment";
 
@@ -20,7 +20,7 @@ export class JwtEncrypter implements IEncrypter {
     }
 
 
-    encrypt({ sub, type }: IEncryptRequest): IEncrypterResponse {
+    encrypt({ sub, type }: IEncryptRequest): IEncryptResponse {
         const token = jwt.sign({ sub, type }, this.secret, { expiresIn: this.getExpirationTime(type) });
         return { token, expiresAt: moment().add(this.getExpirationTime(type), "seconds").toDate() };
     }
