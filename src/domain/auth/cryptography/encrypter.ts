@@ -5,7 +5,7 @@ export interface IEncryptRequest {
     type: TokenType
 }
 
-export interface IEncrypterResponse {
+export interface IEncryptResponse {
     token: string
     expiresAt: Date
 }
@@ -20,6 +20,6 @@ export interface IDecryptResponse {
 }
 
 export interface IEncrypter {
-    encrypt(data: IEncryptRequest): IEncrypterResponse
+    encrypt(data: IEncryptRequest): IEncryptResponse
     decrypt(data: IDecryptRequest): IDecryptResponse
 }
