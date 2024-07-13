@@ -1,6 +1,6 @@
 import { Transaction } from "../entities/transaction"
 
-interface ICreateTemporaryTransactionRequest {
+export interface ICreateTemporaryTransactionRequest {
     id: string
     payerId: string
     payeeId: string
