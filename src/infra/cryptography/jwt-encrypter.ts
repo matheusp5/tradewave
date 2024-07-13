@@ -16,6 +16,8 @@ export class JwtEncrypter implements IEncrypter {
                 return 30 * 60; // 30 minutes in seconds
             case TokenType.REFRESH:
                 return 7 * 24 * 60 * 60; // 7 days in seconds
+            case TokenType.CONFIRM_TRANSACTION:
+                return 1 * 60 * 60; // 1 hour in seconds
         }
     }
 

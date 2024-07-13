@@ -14,7 +14,7 @@ interface IDeleteTemporaryTransactionByIdUseCaseResponse {
     transaction: Transaction
 }
 
-export class GetTemporaryTransactionByIdUseCase implements IUseCase<IDeleteTemporaryTransactionByIdUseCaseRequest, Promise<IDeleteTemporaryTransactionByIdUseCaseResponse>> {
+export class DeleteTemporaryTransactionByIdUseCase implements IUseCase<IDeleteTemporaryTransactionByIdUseCaseRequest, Promise<IDeleteTemporaryTransactionByIdUseCaseResponse>> {
     constructor(private temporaryTransactionRepository: ITemporaryTransactionRepository) { }
 
     async execute({ transactionId, requester }: IDeleteTemporaryTransactionByIdUseCaseRequest): Promise<IDeleteTemporaryTransactionByIdUseCaseResponse> {
