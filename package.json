@@ -19,7 +19,8 @@
     "nodemailer": "^6.9.14",
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
-    "pm2": "^5.4.2"
+    "pm2": "^5.4.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",

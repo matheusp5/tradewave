@@ -1,22 +1,23 @@
 import { BaseEntity } from "@/core/entities/base-entity";
 import { Optional } from "@/core/types/optional";
+import { generateId } from "@/core/utils/generate-id";
 import { Account } from "@/domain/auth/entities/account";
 
 export interface ITransactionProps {
-    payer: Account
-    payee: Account
+    payerId: string
+    payeeId: string
     amount: number
     createdAt: Date
     confirmedAt?: Date
 }
 
 export class Transaction extends BaseEntity<ITransactionProps> {
-    get payer(): Account {
-        return this.props.payer
+    get payer(): string {
+        return this.props.payerId
     }
 
-    get payee(): Account {
-        return this.props.payee
+    get payee(): string {
+        return this.props.payeeId
     }
 
     get amount(): number {
@@ -35,11 +36,11 @@ export class Transaction extends BaseEntity<ITransactionProps> {
         super(id, props)
     }
 
-    public static create(props: Optional<ITransactionProps, "createdAt">, id: string): Transaction {
+    public static create(props: Optional<ITransactionProps, "createdAt">, id?: string): Transaction {
         const transaction = new Transaction({
             ...props,
             createdAt: new Date()
-        }, id)
+        }, id ?? generateId())
         return transaction
     }
 }

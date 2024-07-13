@@ -1,6 +1,7 @@
 import { BaseEntity } from '@/core/entities/base-entity'
 import { Optional } from '@/core/types/optional'
 import { Password } from './value-objects/password'
+import { generateId } from '@/core/utils/generate-id'
 
 export interface IAccountProps {
   firstName: string
@@ -74,9 +75,9 @@ export class Account extends BaseEntity<IAccountProps> {
 
   static create(
     props: Optional<IAccountProps, 'createdAt' | 'updatedAt'>,
-    id: string
+    id?: string
   ) {
-    const account = new Account(id, {
+    const account = new Account(id ?? generateId(), {
       ...props,
       createdAt: props.createdAt ?? new Date(),
       updatedAt: props.updatedAt ?? new Date()
