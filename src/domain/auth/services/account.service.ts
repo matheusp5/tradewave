@@ -3,23 +3,7 @@ import { GetAccountByEmailUseCase } from "../use-cases/account/get-account-by-em
 import { GetAccountByIdUseCase } from "../use-cases/account/get-account-by-id.use-case";
 import { GetAccountByUsernameUseCase } from "../use-cases/account/get-account-by-username.use-case";
 import { DeleteAccountByIdUseCase } from "../use-cases/account/delete-account-by-id.use-case";
-import { Account } from "../entities/account";
-
-interface IShowAccountByEmailDTO {
-    email: string;
-}
-
-interface IShowAccountByUsernameDTO {
-    username: string;
-}
-
-interface IShowAccountByIdDTO {
-    id: string;
-}
-
-interface IDeleteAccount {
-    requester: Account
-}
+import { IDeleteAccountDTO, IShowAccountByEmailDTO, IShowAccountByIdDTO, IShowAccountByUsernameDTO } from "../dtos/account.dto";
 
 export class AccountService {
     private getAccountByEmailUseCase: GetAccountByEmailUseCase;
@@ -38,29 +22,20 @@ export class AccountService {
 
     async showAccountByUsename({ username }: IShowAccountByUsernameDTO) {
         const { account } = await this.getAccountByUsernameUseCase.execute({ username });
-
-        return {
-            account,
-        };
+        return { account }
     }
 
     async showAccountByEmail({ email }: IShowAccountByEmailDTO) {
         const { account } = await this.getAccountByEmailUseCase.execute({ email });
-
-        return {
-            account,
-        };
+        return { account };
     }
 
     async showAccountById({ id }: IShowAccountByIdDTO) {
         const { account } = await this.getAccountByIdUseCase.execute({ id });
-
-        return {
-            account,
-        }
+        return { account }
     }
 
-    async deleteAccount({ requester }: IDeleteAccount) {
+    async deleteAccount({ requester }: IDeleteAccountDTO) {
         await this.deleteAccountUseCase.execute({ id: requester.id });
         return { requester }
     }
