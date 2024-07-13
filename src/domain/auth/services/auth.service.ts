@@ -111,7 +111,9 @@ export class AuthService {
     }
 
     async verifyToken({ token }: IVerifyTokenDTO) {
-        return this.verifyTokenUseCase.execute({ token });
+        const { id, type } = await this.verifyTokenUseCase.execute({ token });
+        const { account } = await this.getAccountByIdUseCase.execute({ id });
+        return { account, type }
     }
 
     async me({ requester }: { requester: Account }) {
