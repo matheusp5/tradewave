@@ -15,7 +15,7 @@ import { GenerateTokenUseCase } from "@/domain/auth/use-cases/auth/generate-toke
 import { VerifyTokenUseCase } from "@/domain/auth/use-cases/auth/verify-token.use-case";
 import { IEncrypter } from "@/domain/auth/cryptography/encrypter";
 import { TokenType } from "@/core/enums/token-type";
-import { ICreateTransactionDTO } from "../dto/transaction.dto";
+import { IConfirmTransactionDTO, ICreateTransactionDTO, IMyTransactionsDTO } from "../dto/transaction.dto";
 
 export class TransactionService {
     private createTransactionUseCase: CreateTransactionUseCase
@@ -69,7 +69,7 @@ export class TransactionService {
         }
     }
 
-    async confirmTransaction({ token, requester }: { token: string, requester: Account }) {
+    async confirmTransaction({ token, requester }: IConfirmTransactionDTO) {
         const { sub: transactionId } = this.verifyTokenUseCase.execute({ token })
 
         const { transaction } = await this.getTemporaryTransactionByIdUseCase.execute({ transactionId })
@@ -81,7 +81,7 @@ export class TransactionService {
         return { transaction }
     }
 
-    async myTransactions({ requester }: { requester: Account }) {
+    async myTransactions({ requester }: IMyTransactionsDTO) {
         const { transactions } = await this.getTransactionsByAccountIdUseCase.execute({ accountId: requester.id })
         const { transactions: temporaryTransactions } = await this.getAllTemporaryTransactionsByAccountIdUseCase.execute({ accountId: requester.id })
 

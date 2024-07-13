@@ -9,14 +9,6 @@ export interface ICreateAccountRequest {
     password: Password
 }
 
-export interface IUpdateAccountDTO {
-    firstName?: string
-    lastName?: string
-    username?: string
-    email?: string
-    password?: Password
-}
-
 export interface IShowAccountByEmailDTO {
     email: string;
 }

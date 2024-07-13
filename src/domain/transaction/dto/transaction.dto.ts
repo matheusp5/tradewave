@@ -1,3 +1,5 @@
+import { Account } from "@/domain/auth/entities/account"
+
 export interface ICreateBlockchainTransactionRequest {
     id: string
     payerId: string
@@ -18,4 +20,13 @@ export interface ICreateTemporaryTransactionRequest {
 export interface ICreateTransactionDTO {
     email: string
     amount: number
+}
+
+export interface IConfirmTransactionDTO {
+    token: string
+    requester: Account
+}
+
+export interface IMyTransactionsDTO {
+    requester: Account
 }
