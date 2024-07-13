@@ -1,6 +1,6 @@
 import { IUseCase } from "@/core/types/use-case"
-import { ITransactionContract } from "../blockchain/transaction-contract"
-import { Transaction } from "../entities/transaction"
+import { ITransactionContract } from "../../blockchain/transaction-contract"
+import { Transaction } from "../../entities/transaction"
 
 interface IGetAllTransactionsByAccountIdUseCaseRequest {
     accountId: string
@@ -10,7 +10,7 @@ interface IGetAllTransactionsByAccountIdUseCaseResponse {
     transactions: Transaction[]
 }
 
-export class GetTransactionsByAccountId implements IUseCase<IGetAllTransactionsByAccountIdUseCaseRequest, Promise<IGetAllTransactionsByAccountIdUseCaseResponse>> {
+export class GetTransactionsByAccountIdUseCase implements IUseCase<IGetAllTransactionsByAccountIdUseCaseRequest, Promise<IGetAllTransactionsByAccountIdUseCaseResponse>> {
     constructor(
         private transactionContract: ITransactionContract
     ) { }

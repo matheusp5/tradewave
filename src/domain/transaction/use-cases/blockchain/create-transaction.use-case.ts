@@ -1,6 +1,6 @@
 import { IUseCase } from "@/core/types/use-case";
-import { Transaction } from "../entities/transaction";
-import { ITransactionContract } from "../blockchain/transaction-contract";
+import { Transaction } from "../../entities/transaction";
+import { ITransactionContract } from "../../blockchain/transaction-contract";
 
 interface CreateTransactionUseCaseRequest {
     payerId: string

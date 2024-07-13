@@ -1,5 +1,5 @@
 import { IUseCase } from "@/core/types/use-case";
-import { ITransactionContract } from "../blockchain/transaction-contract";
+import { ITransactionContract } from "../../blockchain/transaction-contract";
 
 interface IGetAccoutBalanceUseCaseRequest {
     accountId: string;
