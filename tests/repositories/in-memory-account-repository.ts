@@ -1,4 +1,5 @@
-import { ICreateAccountDTO } from "@/domain/auth/dtos/account.dto";
+import { generateId } from "@/core/utils/generate-id";
+import { ICreateAccountRequest } from "@/domain/auth/dtos/account.dto";
 import { Account } from "@/domain/auth/entities/account";
 import { IAccountRepository } from "@/domain/auth/repositories/account-repository";
 import { randomUUID } from "crypto";
@@ -25,8 +26,8 @@ export class InMemoryAccountRepository implements IAccountRepository {
         return Promise.resolve(account || null);
     }
 
-    create(account: ICreateAccountDTO): Promise<Account> {
-        const newAccount = Account.create(account, randomUUID());
+    create(account: ICreateAccountRequest): Promise<Account> {
+        const newAccount = Account.create(generateId(), account);
         this.accounts.push(newAccount);
         return Promise.resolve(newAccount);
     }

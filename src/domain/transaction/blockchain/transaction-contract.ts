@@ -1,15 +1,7 @@
-import { ITransactionProps, Transaction } from "../entities/transaction";
-
-export interface ICreateTransactionRequest {
-    id: string
-    payerId: string
-    payeeId: string
-    amount: number
-    createdAt: Date
-    verifiedAt: Date
-}
+import { ICreateBlockchainTransactionRequest } from "../dto/transaction.dto";
+import { Transaction } from "../entities/transaction";
 
 export interface ITransactionContract {
-    createTransaction(data: ICreateTransactionRequest): Promise<Transaction>
+    createTransaction(data: ICreateBlockchainTransactionRequest): Promise<Transaction>
     getAllTransactionsByAccountId(accountId: string): Promise<Transaction[]>
 }

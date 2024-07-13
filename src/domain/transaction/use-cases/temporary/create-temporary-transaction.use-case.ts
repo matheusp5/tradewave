@@ -1,23 +1,22 @@
 import { IUseCase } from "@/core/types/use-case";
 import { ITemporaryTransactionRepository } from "../../repositories/temporary-transactions-repository";
-import { ICreateTransactionRequest } from "../../blockchain/transaction-contract";
 import { Transaction } from "../../entities/transaction";
 import { generateId } from "@/core/utils/generate-id";
 
-interface CreateTemporaryTransactionUseCaseRequest {
+interface ICreateTemporaryTransactionUseCaseRequest {
     payerId: string
     payeeId: string
     amount: number
 }
 
-interface CreateTemporaryTransactionUseCaseResponse {
+interface ICreateTemporaryTransactionUseCaseResponse {
     transaction: Transaction
 }
 
-export class CreateTemporaryTransactionUseCase implements IUseCase<CreateTemporaryTransactionUseCaseRequest, Promise<CreateTemporaryTransactionUseCaseResponse>> {
+export class CreateTemporaryTransactionUseCase implements IUseCase<ICreateTemporaryTransactionUseCaseRequest, Promise<ICreateTemporaryTransactionUseCaseResponse>> {
     constructor(private temporaryTransactionRepository: ITemporaryTransactionRepository) { }
 
-    async execute(request: CreateTemporaryTransactionUseCaseRequest): Promise<CreateTemporaryTransactionUseCaseResponse> {
+    async execute(request: ICreateTemporaryTransactionUseCaseRequest): Promise<ICreateTemporaryTransactionUseCaseResponse> {
         const transaction = await this.temporaryTransactionRepository.createTemporaryTransaction({
             id: generateId(),
             createdAt: new Date(),

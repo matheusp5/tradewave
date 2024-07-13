@@ -1,7 +1,5 @@
 import { BaseEntity } from "@/core/entities/base-entity";
 import { Optional } from "@/core/types/optional";
-import { generateId } from "@/core/utils/generate-id";
-import { Account } from "@/domain/auth/entities/account";
 
 export interface ITransactionProps {
     payerId: string

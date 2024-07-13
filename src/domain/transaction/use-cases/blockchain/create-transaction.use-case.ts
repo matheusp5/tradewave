@@ -3,7 +3,7 @@ import { Transaction } from "../../entities/transaction";
 import { ITransactionContract } from "../../blockchain/transaction-contract";
 import moment from "moment";
 
-interface CreateTransactionUseCaseRequest {
+interface ICreateBlockchainTransactionUseCaseRequest {
     id: string
     payerId: string
     payeeId: string
@@ -12,16 +12,16 @@ interface CreateTransactionUseCaseRequest {
     verifiedAt: Date
 }
 
-interface CreateTransactionUseCaseResponse {
+interface ICreateBlockchainTransactionUseCaseResponse {
     transaction: Transaction
 }
 
-export class CreateTransactionUseCase implements IUseCase<CreateTransactionUseCaseRequest, Promise<CreateTransactionUseCaseResponse>> {
+export class CreateTransactionUseCase implements IUseCase<ICreateBlockchainTransactionUseCaseRequest, Promise<ICreateBlockchainTransactionUseCaseResponse>> {
     constructor(
         private transactionContract: ITransactionContract
     ) { }
 
-    async execute(request: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
+    async execute(request: ICreateBlockchainTransactionUseCaseRequest): Promise<ICreateBlockchainTransactionUseCaseResponse> {
         const transaction = await this.transactionContract.createTransaction(request)
         return { transaction }
     }

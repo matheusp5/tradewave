@@ -1,7 +1,6 @@
 import { IUseCase } from "@/core/types/use-case";
 import { Transaction } from "../../entities/transaction";
 import { ITemporaryTransactionRepository } from "../../repositories/temporary-transactions-repository";
-import { ResourceNotFoundError } from "@/core/errors/resource-not-found.error";
 
 interface IGetAllTemporaryTransactionsByAccountIdUseCaseRequest {
     accountId: string
