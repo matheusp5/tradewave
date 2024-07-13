@@ -21,7 +21,7 @@ describe('Verify Token Use Case', () => {
 
         const verifyTokenResponse = sut.execute({ token })
 
-        expect(verifyTokenResponse.id).toBe(accountId)
+        expect(verifyTokenResponse.sub).toBe(accountId)
         expect(verifyTokenResponse.type).toBe(type)
     })
 

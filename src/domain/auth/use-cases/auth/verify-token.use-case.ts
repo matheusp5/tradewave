@@ -7,7 +7,7 @@ interface IVerifyTokenUseCaseRequest {
 }
 
 interface IVerifyTokenUseCaseResponse {
-    id: string
+    sub: string
     type: TokenType
 }
 
@@ -17,7 +17,6 @@ export class VerifyTokenUseCase implements IUseCase<IVerifyTokenUseCaseRequest, 
     ) { }
 
     execute({ token }: IVerifyTokenUseCaseRequest): IVerifyTokenUseCaseResponse {
-        const { sub: id, type } = this.encrypter.decrypt({ token })
-        return { id, type }
+        return this.encrypter.decrypt({ token })
     }
 }

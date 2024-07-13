@@ -1,34 +1,30 @@
+import { ICreateTemporaryTransactionRequest } from "@/domain/transaction/dto/transaction.dto"
 import { Transaction } from "@/domain/transaction/entities/transaction"
-import { ICreateTemporaryTransactionRequest, ITemporaryTransactionRepository } from "@/domain/transaction/repositories/temporary-transactions-repository"
+import { ITemporaryTransactionRepository } from "@/domain/transaction/repositories/temporary-transactions-repository"
 
 export class InMemoryTemporaryTransactionRepository implements ITemporaryTransactionRepository {
     private transactions: Transaction[] = []
 
     async createTemporaryTransaction(transaction: ICreateTemporaryTransactionRequest): Promise<Transaction> {
-        const newTransaction = Transaction.create({
+        const newTransaction = Transaction.create(transaction.id, {
             amount: transaction.amount,
             createdAt: transaction.createdAt,
             payeeId: transaction.payeeId,
             payerId: transaction.payerId
-        }, transaction.id)
+        })
 
         this.transactions.push(newTransaction)
 
         return newTransaction
     }
 
-    async getTemporaryTransactionById(transactionId: string): Promise<Transaction> {
+    async getTemporaryTransactionById(transactionId: string): Promise<Transaction | null> {
         const transaction = this.transactions.find(transaction => transaction.id === transactionId)
-
-        if (!transaction) {
-            throw new Error("Transaction not found")
-        }
-
-        return transaction
+        return transaction ?? null
     }
 
     async getAllTemporaryTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
-        const transactions = this.transactions.filter(transaction => transaction.payer === accountId || transaction.payee === accountId)
+        const transactions = this.transactions.filter(transaction => transaction.payerId === accountId || transaction.payeeId === accountId)
         return transactions
     }
 

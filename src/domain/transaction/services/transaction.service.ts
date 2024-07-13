@@ -15,11 +15,7 @@ import { GenerateTokenUseCase } from "@/domain/auth/use-cases/auth/generate-toke
 import { VerifyTokenUseCase } from "@/domain/auth/use-cases/auth/verify-token.use-case";
 import { IEncrypter } from "@/domain/auth/cryptography/encrypter";
 import { TokenType } from "@/core/enums/token-type";
-
-interface ICreateTransactionDTO {
-    email: string
-    amount: number
-}
+import { IConfirmTransactionDTO, ICreateTransactionDTO, IMyTransactionsDTO } from "../dto/transaction.dto";
 
 export class TransactionService {
     private createTransactionUseCase: CreateTransactionUseCase
@@ -65,7 +61,7 @@ export class TransactionService {
 
         const { account: payee } = await this.getAccountByEmailUseCase.execute({ email: request.email })
         const { transaction } = await this.createTemporaryTransactionUseCase.execute({ payeeId: payee.id, payerId: payer.id, amount: request.amount })
-        const confirmTransactionToken = await this.generateTokenUseCase.execute({ id: transaction.id, type: TokenType.CONFIRM_TRANSACTION })
+        const confirmTransactionToken = await this.generateTokenUseCase.execute({ sub: transaction.id, type: TokenType.CONFIRM_TRANSACTION })
 
         return {
             transaction,
@@ -73,19 +69,19 @@ export class TransactionService {
         }
     }
 
-    async confirmTransaction({ token, requester }: { token: string, requester: Account }) {
-        const { id: transactionId } = this.verifyTokenUseCase.execute({ token })
+    async confirmTransaction({ token, requester }: IConfirmTransactionDTO) {
+        const { sub: transactionId } = this.verifyTokenUseCase.execute({ token })
 
         const { transaction } = await this.getTemporaryTransactionByIdUseCase.execute({ transactionId })
-        if (transaction.payer.id !== requester.id) throw new BadRequestError('Você não tem permissão para confirmar essa transação.')
+        if (transaction.payerId !== requester.id) throw new BadRequestError('Você não tem permissão para confirmar essa transação.')
 
-        await this.createTransactionUseCase.execute({ id: transaction.id, payerId: transaction.payer.id, payeeId: transaction.payee.id, amount: transaction.amount, createdAt: transaction.createdAt, verifiedAt: new Date() })
+        await this.createTransactionUseCase.execute({ id: transaction.id, payerId: transaction.payerId, payeeId: transaction.payeeId, amount: transaction.amount, createdAt: transaction.createdAt, verifiedAt: new Date() })
         await this.deleteTemporaryTransactionUseCase.execute({ transactionId, requester })
 
         return { transaction }
     }
 
-    async myTransactions({ requester }: { requester: Account }) {
+    async myTransactions({ requester }: IMyTransactionsDTO) {
         const { transactions } = await this.getTransactionsByAccountIdUseCase.execute({ accountId: requester.id })
         const { transactions: temporaryTransactions } = await this.getAllTemporaryTransactionsByAccountIdUseCase.execute({ accountId: requester.id })
 

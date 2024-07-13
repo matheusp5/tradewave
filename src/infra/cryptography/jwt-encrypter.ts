@@ -3,11 +3,12 @@ import { UnauthorizedError } from "@/core/errors/unauthorized.error";
 import { IDecryptRequest, IDecryptResponse, IEncrypter, IEncryptResponse, IEncryptRequest } from "@/domain/auth/cryptography/encrypter";
 import jwt from "jsonwebtoken"
 import moment from "moment";
+import env from "../env";
 
 export class JwtEncrypter implements IEncrypter {
     private secret: string;
     constructor() {
-        this.secret = "dSDGHSGDHASDGAJKSDGKSAHGAJKSDGSJAKDGaksj42378462378942";
+        this.secret = env.jwt.secret;
     }
 
     private getExpirationTime(type: TokenType) {
@@ -20,7 +21,6 @@ export class JwtEncrypter implements IEncrypter {
                 return 1 * 60 * 60; // 1 hour in seconds
         }
     }
-
 
     encrypt({ sub, type }: IEncryptRequest): IEncryptResponse {
         const token = jwt.sign({ sub, type }, this.secret, { expiresIn: this.getExpirationTime(type) });

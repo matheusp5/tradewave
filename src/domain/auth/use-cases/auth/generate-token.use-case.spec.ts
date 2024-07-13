@@ -16,7 +16,7 @@ describe("Generate Token Use Case", () => {
     it('should generate a token', async () => {
         const accountId = "teste"
 
-        const createTokenResponse = await sut.execute({ id: accountId, type: TokenType.ACCESS })
+        const createTokenResponse = await sut.execute({ sub: accountId, type: TokenType.ACCESS })
 
         expect(createTokenResponse.token).toBeTruthy()
         expect(typeof createTokenResponse.token).toBe("string")

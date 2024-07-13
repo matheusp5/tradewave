@@ -22,8 +22,7 @@ export class DeleteTemporaryTransactionByIdUseCase implements IUseCase<IDeleteTe
 
         if (!transaction) throw new ResourceNotFoundError('Transação temporária não encontrada.')
         if (
-            transaction.payer.id !== requester.id &&
-            transaction.payee.id !== requester.id
+            transaction.payerId !== requester.id
         ) throw new UnauthorizedError("Você não tem permissão para deletar essa transação.")
 
         await this.temporaryTransactionRepository.deleteTemporaryTransactionById(transactionId)
