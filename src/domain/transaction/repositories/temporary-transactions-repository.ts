@@ -11,6 +11,6 @@ interface ICreateTemporaryTransactionRequest {
 export interface ITemporaryTransactionRepository {
     createTemporaryTransaction(transaction: ICreateTemporaryTransactionRequest): Promise<Transaction>
     getTemporaryTransactionById(transactionId: string): Promise<Transaction>
-    updateTemporaryTransactionById(transactionId: string, transaction: Transaction): Promise<Transaction>
+    getAllTemporaryTransactionsByAccountId(accountId: string): Promise<Transaction[]>
     deleteTemporaryTransactionById(transactionId: string): Promise<void>
 }

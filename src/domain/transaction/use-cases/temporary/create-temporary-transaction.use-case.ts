@@ -18,11 +18,11 @@ export class CreateTemporaryTransactionUseCase implements IUseCase<CreateTempora
     constructor(private temporaryTransactionRepository: ITemporaryTransactionRepository) { }
 
     async execute(request: CreateTemporaryTransactionUseCaseRequest): Promise<CreateTemporaryTransactionUseCaseResponse> {
-        // generate id
         const transaction = await this.temporaryTransactionRepository.createTemporaryTransaction({
-            ...request,
             id: generateId(),
-            createdAt: new Date()
+            createdAt: new Date(),
+
+            ...request,
         });
 
         return { transaction };
