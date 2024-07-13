@@ -3,7 +3,7 @@ import { IUseCase } from "@/core/types/use-case"
 import { IEncrypter } from "../../cryptography/encrypter"
 
 interface IGenerateTokenUseCaseRequest {
-    accountId: string
+    id: string
     type: TokenType
 }
 
@@ -17,8 +17,8 @@ export class GenerateTokenUseCase implements IUseCase<IGenerateTokenUseCaseReque
         private encrypter: IEncrypter
     ) { }
 
-    async execute({ accountId, type }: IGenerateTokenUseCaseRequest): Promise<IGenerateTokenUseCaseResponse> {
-        const createTokenResult = this.encrypter.encrypt({ sub: accountId, type })
+    async execute({ id, type }: IGenerateTokenUseCaseRequest): Promise<IGenerateTokenUseCaseResponse> {
+        const createTokenResult = this.encrypter.encrypt({ sub: id, type })
         return createTokenResult
     }
 }
