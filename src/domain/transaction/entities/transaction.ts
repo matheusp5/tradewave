@@ -12,11 +12,11 @@ export interface ITransactionProps {
 }
 
 export class Transaction extends BaseEntity<ITransactionProps> {
-    get payer(): string {
+    get payerId(): string {
         return this.props.payerId
     }
 
-    get payee(): string {
+    get payeeId(): string {
         return this.props.payeeId
     }
 
@@ -32,15 +32,11 @@ export class Transaction extends BaseEntity<ITransactionProps> {
         return this.props.confirmedAt
     }
 
-    private constructor(props: ITransactionProps, id: string) {
-        super(id, props)
-    }
-
-    public static create(props: Optional<ITransactionProps, "createdAt">, id?: string): Transaction {
-        const transaction = new Transaction({
+    public static create(id: string, props: Optional<ITransactionProps, "createdAt">): Transaction {
+        const transaction = new Transaction(id, {
             ...props,
             createdAt: new Date()
-        }, id ?? generateId())
+        })
         return transaction
     }
 }
