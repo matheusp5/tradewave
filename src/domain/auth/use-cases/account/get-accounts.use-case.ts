@@ -13,7 +13,6 @@ export class GetAccountsUseCase implements IUseCase<{}, Promise<IGetAccountsUseC
 
     async execute(): Promise<IGetAccountsUseCaseResponse> {
         const accounts = await this.accountRepository.getAll()
-
         return { accounts }
     }
 

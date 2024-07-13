@@ -1,7 +1,7 @@
 import { Account } from "../entities/account"
 import { Password } from "../entities/value-objects/password"
 
-export interface ICreateAccountDTO {
+export interface ICreateAccountRequest {
     firstName: string
     lastName: string
     username: string
@@ -14,7 +14,7 @@ export interface IUpdateAccountDTO {
     lastName?: string
     username?: string
     email?: string
-    password?: string
+    password?: Password
 }
 
 export interface IShowAccountByEmailDTO {

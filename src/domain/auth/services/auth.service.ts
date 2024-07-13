@@ -38,13 +38,13 @@ export class AuthService {
         this.getAccountBalanceUseCase = new GetAccountBalanceUseCase(transactionContract);
     }
 
-    async loginWithEmailAndPassword({ email, password }: ILoginWithEmailAndPasswordDTO) {
+    async login({ email, password }: ILoginWithEmailAndPasswordDTO) {
         const { account } = await this.getAccountByEmailUseCase.execute({ email });
 
         if (!account.password.comparePasswords(password)) throw new UnauthorizedError("E-mail ou senha não encontrados. Verifique suas credenciais.")
 
-        const accessToken = await this.generateTokenUseCase.execute({ id: account.id, type: TokenType.ACCESS });
-        const refreshToken = await this.generateTokenUseCase.execute({ id: account.id, type: TokenType.REFRESH });
+        const accessToken = await this.generateTokenUseCase.execute({ sub: account.id, type: TokenType.ACCESS });
+        const refreshToken = await this.generateTokenUseCase.execute({ sub: account.id, type: TokenType.REFRESH });
 
         return {
             account,
@@ -61,8 +61,8 @@ export class AuthService {
             password: Password.createNewPassword(dto.password)
         })
 
-        const accessToken = await this.generateTokenUseCase.execute({ id: account.id, type: TokenType.ACCESS });
-        const refreshToken = await this.generateTokenUseCase.execute({ id: account.id, type: TokenType.REFRESH });
+        const accessToken = await this.generateTokenUseCase.execute({ sub: account.id, type: TokenType.ACCESS });
+        const refreshToken = await this.generateTokenUseCase.execute({ sub: account.id, type: TokenType.REFRESH });
 
         return {
             account,
@@ -74,10 +74,10 @@ export class AuthService {
     }
 
     async refreshAuth({ refreshToken }: IRefreshAuthDTO) {
-        const { id } = await this.verifyTokenUseCase.execute({ token: refreshToken });
+        const { sub } = await this.verifyTokenUseCase.execute({ token: refreshToken });
 
-        const accessToken = await this.generateTokenUseCase.execute({ id, type: TokenType.ACCESS });
-        const newRefreshToken = await this.generateTokenUseCase.execute({ id, type: TokenType.REFRESH });
+        const accessToken = await this.generateTokenUseCase.execute({ sub, type: TokenType.ACCESS });
+        const newRefreshToken = await this.generateTokenUseCase.execute({ sub, type: TokenType.REFRESH });
 
         return {
             tokens: {
@@ -88,8 +88,8 @@ export class AuthService {
     }
 
     async verifyToken({ token }: IVerifyTokenDTO) {
-        const { id, type } = await this.verifyTokenUseCase.execute({ token });
-        const { account } = await this.getAccountByIdUseCase.execute({ id });
+        const { sub, type } = await this.verifyTokenUseCase.execute({ token });
+        const { account } = await this.getAccountByIdUseCase.execute({ id: sub });
         return { account, type }
     }
 
