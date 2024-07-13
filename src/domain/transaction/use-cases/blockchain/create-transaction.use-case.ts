@@ -1,11 +1,15 @@
 import { IUseCase } from "@/core/types/use-case";
 import { Transaction } from "../../entities/transaction";
 import { ITransactionContract } from "../../blockchain/transaction-contract";
+import moment from "moment";
 
 interface CreateTransactionUseCaseRequest {
+    id: string
     payerId: string
     payeeId: string
     amount: number
+    createdAt: Date
+    verifiedAt: Date
 }
 
 interface CreateTransactionUseCaseResponse {

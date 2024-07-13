@@ -1,4 +1,5 @@
 import { BaseEntity } from "@/core/entities/base-entity";
+import { Optional } from "@/core/types/optional";
 import { Account } from "@/domain/auth/entities/account";
 
 export interface ITransactionProps {
@@ -6,6 +7,7 @@ export interface ITransactionProps {
     payee: Account
     amount: number
     createdAt: Date
+    confirmedAt?: Date
 }
 
 export class Transaction extends BaseEntity<ITransactionProps> {
@@ -25,12 +27,19 @@ export class Transaction extends BaseEntity<ITransactionProps> {
         return this.props.createdAt
     }
 
+    get confirmedAt(): Date | undefined {
+        return this.props.confirmedAt
+    }
+
     private constructor(props: ITransactionProps, id: string) {
         super(id, props)
     }
 
-    public static create(props: ITransactionProps, id: string): Transaction {
-        const transaction = new Transaction(props, id)
+    public static create(props: Optional<ITransactionProps, "createdAt">, id: string): Transaction {
+        const transaction = new Transaction({
+            ...props,
+            createdAt: new Date()
+        }, id)
         return transaction
     }
 }
