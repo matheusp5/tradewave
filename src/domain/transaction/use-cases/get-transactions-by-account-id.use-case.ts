@@ -15,8 +15,8 @@ export class GetTransactionsByAccountId implements IUseCase<IGetAllTransactionsB
         private transactionContract: ITransactionContract
     ) { }
 
-    async execute(request: IGetAllTransactionsByAccountIdUseCaseRequest): Promise<IGetAllTransactionsByAccountIdUseCaseResponse> {
-        const transactions = await this.transactionContract.getAllTransactionsByAccountId(request)
+    async execute({ accountId }: IGetAllTransactionsByAccountIdUseCaseRequest): Promise<IGetAllTransactionsByAccountIdUseCaseResponse> {
+        const transactions = await this.transactionContract.getAllTransactionsByAccountId(accountId)
         return { transactions }
     }
 }

@@ -3,8 +3,8 @@ import { Transaction } from "../entities/transaction";
 import { ITransactionContract } from "../blockchain/transaction-contract";
 
 interface CreateTransactionUseCaseRequest {
-    payer: string
-    payee: string
+    payerId: string
+    payeeId: string
     amount: number
 }
 
