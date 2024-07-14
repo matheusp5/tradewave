@@ -18,7 +18,7 @@ export class GetAccountByEmailUseCase implements IUseCase<IGetAccountByEmailUseC
 
     async execute({ email }: IGetAccountByEmailUseCaseRequest): Promise<IGetAccountByEmailUseCaseResponse> {
         const account = await this.accountRepository.getByEmail(email)
-        if (!account) throw new ResourceNotFoundError('Conta não encontrada.')
+        if (!account) throw new ResourceNotFoundError('Conta inexistente.')
         return { account }
     }
 
