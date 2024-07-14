@@ -23,7 +23,6 @@ export interface ICreateTransactionDTO {
 
 export interface IConfirmTransactionDTO {
     token: string
-    requester: Account
 }
 
 export interface IMyTransactionsDTO {
