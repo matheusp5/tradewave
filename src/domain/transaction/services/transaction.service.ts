@@ -69,7 +69,7 @@ export class TransactionService {
         }
     }
 
-    async confirmTransaction({ token, requester }: IConfirmTransactionDTO) {
+    async confirmTransaction({ token, requester }: IConfirmTransactionDTO & { requester: Account }) {
         const { sub: transactionId } = this.verifyTokenUseCase.execute({ token })
 
         const { transaction } = await this.getTemporaryTransactionByIdUseCase.execute({ transactionId })

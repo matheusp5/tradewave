@@ -20,7 +20,7 @@ export class AccountService {
         this.deleteAccountUseCase = new DeleteAccountByIdUseCase(accountRepository);
     }
 
-    async showAccountByUsename({ username }: IShowAccountByUsernameDTO) {
+    async showAccountByUsername({ username }: IShowAccountByUsernameDTO) {
         const { account } = await this.getAccountByUsernameUseCase.execute({ username });
         return { account }
     }
