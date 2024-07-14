@@ -1,26 +1,26 @@
-import { Account } from "../entities/account"
-import { Password } from "../entities/value-objects/password"
+import { Account } from '../entities/account'
+import { Password } from '../entities/value-objects/password'
 
 export interface ICreateAccountRequest {
-    firstName: string
-    lastName: string
-    username: string
-    email: string
-    password: Password
+  firstName: string
+  lastName: string
+  username: string
+  email: string
+  password: Password
 }
 
 export interface IShowAccountByEmailDTO {
-    email: string;
+  email: string
 }
 
 export interface IShowAccountByUsernameDTO {
-    username: string;
+  username: string
 }
 
 export interface IShowAccountByIdDTO {
-    id: string;
+  id: string
 }
 
 export interface IDeleteAccountDTO {
-    requester: Account
+  requester: Account
 }

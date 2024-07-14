@@ -1,5 +1,5 @@
 export class ForbiddenError extends Error {
-    constructor(message?: string) {
-        super(message || 'not allowed')
-    }
+  constructor(message?: string) {
+    super(message || 'not allowed')
+  }
 }

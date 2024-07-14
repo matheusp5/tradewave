@@ -1,28 +1,35 @@
-import { IUseCase } from "@/core/types/use-case";
-import { Transaction } from "../../entities/transaction";
-import { ITransactionContract } from "../../blockchain/transaction-contract";
-import moment from "moment";
+import { IUseCase } from '@/core/types/use-case'
+import { Transaction } from '../../entities/transaction'
+import { ITransactionContract } from '../../blockchain/transaction-contract'
+import moment from 'moment'
 
 interface ICreateBlockchainTransactionUseCaseRequest {
-    id: string
-    payerId: string
-    payeeId: string
-    amount: number
-    createdAt: Date
-    verifiedAt: Date
+  id: string
+  payerId: string
+  payeeId: string
+  amount: number
+  createdAt: Date
+  verifiedAt: Date
 }
 
 interface ICreateBlockchainTransactionUseCaseResponse {
-    transaction: Transaction
+  transaction: Transaction
 }
 
-export class CreateTransactionUseCase implements IUseCase<ICreateBlockchainTransactionUseCaseRequest, Promise<ICreateBlockchainTransactionUseCaseResponse>> {
-    constructor(
-        private transactionContract: ITransactionContract
-    ) { }
+export class CreateTransactionUseCase
+  implements
+    IUseCase<
+      ICreateBlockchainTransactionUseCaseRequest,
+      Promise<ICreateBlockchainTransactionUseCaseResponse>
+    >
+{
+  constructor(private transactionContract: ITransactionContract) {}
 
-    async execute(request: ICreateBlockchainTransactionUseCaseRequest): Promise<ICreateBlockchainTransactionUseCaseResponse> {
-        const transaction = await this.transactionContract.createTransaction(request)
-        return { transaction }
-    }
+  async execute(
+    request: ICreateBlockchainTransactionUseCaseRequest
+  ): Promise<ICreateBlockchainTransactionUseCaseResponse> {
+    const transaction =
+      await this.transactionContract.createTransaction(request)
+    return { transaction }
+  }
 }

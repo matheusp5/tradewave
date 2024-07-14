@@ -6,29 +6,29 @@ import { InMemoryAccountRepository } from 'tests/repositories/in-memory-account-
 import { makeAccount } from 'tests/factories/make-account'
 
 describe('Get Account By Email Use Case', () => {
-    let sut: GetAccountByEmailUseCase
-    let accountRepository: IAccountRepository
+  let sut: GetAccountByEmailUseCase
+  let accountRepository: IAccountRepository
 
-    beforeEach(() => {
-        accountRepository = new InMemoryAccountRepository()
-        sut = new GetAccountByEmailUseCase(accountRepository)
-    })
+  beforeEach(() => {
+    accountRepository = new InMemoryAccountRepository()
+    sut = new GetAccountByEmailUseCase(accountRepository)
+  })
 
-    it('should return the account when it exists', async () => {
-        const email = 'test@example.com'
-        const accountPayload = makeAccount({ email })
+  it('should return the account when it exists', async () => {
+    const email = 'test@example.com'
+    const accountPayload = makeAccount({ email })
 
-        const account = await accountRepository.create(accountPayload)
+    const account = await accountRepository.create(accountPayload)
 
-        const findByEmailResponse = await sut.execute({ email })
+    const findByEmailResponse = await sut.execute({ email })
 
-        expect(findByEmailResponse).toBeTruthy()
-        expect(findByEmailResponse.account.id).toBe(account.id)
-    })
+    expect(findByEmailResponse).toBeTruthy()
+    expect(findByEmailResponse.account.id).toBe(account.id)
+  })
 
-    it('should throw ResourceNotFoundError when the account does not exist', async () => {
-        const email = 'test@example.com'
+  it('should throw ResourceNotFoundError when the account does not exist', async () => {
+    const email = 'test@example.com'
 
-        await expect(sut.execute({ email })).rejects.toThrow(ResourceNotFoundError)
-    })
+    await expect(sut.execute({ email })).rejects.toThrow(ResourceNotFoundError)
+  })
 })

@@ -1,40 +1,43 @@
-import { BaseEntity } from "@/core/entities/base-entity";
-import { Optional } from "@/core/types/optional";
+import { BaseEntity } from '@/core/entities/base-entity'
+import { Optional } from '@/core/types/optional'
 
 export interface ITransactionProps {
-    payerId: string
-    payeeId: string
-    amount: number
-    createdAt: Date
-    confirmedAt?: Date
+  payerId: string
+  payeeId: string
+  amount: number
+  createdAt: Date
+  confirmedAt?: Date
 }
 
 export class Transaction extends BaseEntity<ITransactionProps> {
-    get payerId(): string {
-        return this.props.payerId
-    }
+  get payerId(): string {
+    return this.props.payerId
+  }
 
-    get payeeId(): string {
-        return this.props.payeeId
-    }
+  get payeeId(): string {
+    return this.props.payeeId
+  }
 
-    get amount(): number {
-        return this.props.amount
-    }
+  get amount(): number {
+    return this.props.amount
+  }
 
-    get createdAt(): Date {
-        return this.props.createdAt
-    }
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
 
-    get confirmedAt(): Date | undefined {
-        return this.props.confirmedAt
-    }
+  get confirmedAt(): Date | undefined {
+    return this.props.confirmedAt
+  }
 
-    public static create(id: string, props: Optional<ITransactionProps, "createdAt">): Transaction {
-        const transaction = new Transaction(id, {
-            ...props,
-            createdAt: new Date()
-        })
-        return transaction
-    }
+  public static create(
+    id: string,
+    props: Optional<ITransactionProps, 'createdAt'>
+  ): Transaction {
+    const transaction = new Transaction(id, {
+      ...props,
+      createdAt: new Date()
+    })
+    return transaction
+  }
 }

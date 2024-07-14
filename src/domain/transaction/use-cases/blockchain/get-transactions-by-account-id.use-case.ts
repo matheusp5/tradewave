@@ -1,22 +1,29 @@
-import { IUseCase } from "@/core/types/use-case"
-import { ITransactionContract } from "../../blockchain/transaction-contract"
-import { Transaction } from "../../entities/transaction"
+import { IUseCase } from '@/core/types/use-case'
+import { ITransactionContract } from '../../blockchain/transaction-contract'
+import { Transaction } from '../../entities/transaction'
 
 interface IGetAllTransactionsByAccountIdUseCaseRequest {
-    accountId: string
+  accountId: string
 }
 
 interface IGetAllTransactionsByAccountIdUseCaseResponse {
-    transactions: Transaction[]
+  transactions: Transaction[]
 }
 
-export class GetTransactionsByAccountIdUseCase implements IUseCase<IGetAllTransactionsByAccountIdUseCaseRequest, Promise<IGetAllTransactionsByAccountIdUseCaseResponse>> {
-    constructor(
-        private transactionContract: ITransactionContract
-    ) { }
+export class GetTransactionsByAccountIdUseCase
+  implements
+    IUseCase<
+      IGetAllTransactionsByAccountIdUseCaseRequest,
+      Promise<IGetAllTransactionsByAccountIdUseCaseResponse>
+    >
+{
+  constructor(private transactionContract: ITransactionContract) {}
 
-    async execute({ accountId }: IGetAllTransactionsByAccountIdUseCaseRequest): Promise<IGetAllTransactionsByAccountIdUseCaseResponse> {
-        const transactions = await this.transactionContract.getAllTransactionsByAccountId(accountId)
-        return { transactions }
-    }
+  async execute({
+    accountId
+  }: IGetAllTransactionsByAccountIdUseCaseRequest): Promise<IGetAllTransactionsByAccountIdUseCaseResponse> {
+    const transactions =
+      await this.transactionContract.getAllTransactionsByAccountId(accountId)
+    return { transactions }
+  }
 }

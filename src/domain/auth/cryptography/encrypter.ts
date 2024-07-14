@@ -1,25 +1,25 @@
-import { TokenType } from "@/core/enums/token-type"
+import { TokenType } from '@/core/enums/token-type'
 
 export interface IEncryptRequest {
-    sub: string
-    type: TokenType
+  sub: string
+  type: TokenType
 }
 
 export interface IEncryptResponse {
-    token: string
-    expiresAt: Date
+  token: string
+  expiresAt: Date
 }
 
 export interface IDecryptRequest {
-    token: string
+  token: string
 }
 
 export interface IDecryptResponse {
-    sub: string
-    type: TokenType
+  sub: string
+  type: TokenType
 }
 
 export interface IEncrypter {
-    encrypt(data: IEncryptRequest): IEncryptResponse
-    decrypt(data: IDecryptRequest): IDecryptResponse
+  encrypt(data: IEncryptRequest): IEncryptResponse
+  decrypt(data: IDecryptRequest): IDecryptResponse
 }

@@ -59,13 +59,10 @@ export class Account extends BaseEntity<IAccountProps> {
     this.props.email = email
   }
 
-  static create(
-    id: string,
-    props: Optional<IAccountProps, 'createdAt'>
-  ) {
+  static create(id: string, props: Optional<IAccountProps, 'createdAt'>) {
     const account = new Account(id, {
       ...props,
-      createdAt: props.createdAt ?? new Date(),
+      createdAt: props.createdAt ?? new Date()
     })
 
     return account

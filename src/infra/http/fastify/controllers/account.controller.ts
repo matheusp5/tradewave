@@ -1,49 +1,62 @@
-import { AccountFactory } from "@/domain/auth/factories/account.factory";
-import { FastifyReply, FastifyRequest } from "fastify";
-import { AccountPresenter } from "../presenters/account.presenter";
-import { IShowAccountByEmailDTO, IShowAccountByIdDTO, IShowAccountByUsernameDTO } from "@/domain/auth/dtos/account.dto";
+import { AccountFactory } from '@/domain/auth/factories/account.factory'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { AccountPresenter } from '../presenters/account.presenter'
+import {
+  IShowAccountByEmailDTO,
+  IShowAccountByIdDTO,
+  IShowAccountByUsernameDTO
+} from '@/domain/auth/dtos/account.dto'
 
 export class AccountController {
-    static async showById(req: FastifyRequest<{ Params: IShowAccountByIdDTO }>, reply: FastifyReply) {
-        const accountService = AccountFactory.services()
+  static async showById(
+    req: FastifyRequest<{ Params: IShowAccountByIdDTO }>,
+    reply: FastifyReply
+  ) {
+    const accountService = AccountFactory.services()
 
-        const { id } = req.params
-        const { account } = await accountService.showAccountById({ id })
+    const { id } = req.params
+    const { account } = await accountService.showAccountById({ id })
 
-        reply.send({
-            account: AccountPresenter.toHttp(account)
-        })
-    }
+    reply.send({
+      account: AccountPresenter.toHttp(account)
+    })
+  }
 
-    static async showByUsername(req: FastifyRequest<{ Params: IShowAccountByUsernameDTO }>, reply: FastifyReply) {
-        const accountService = AccountFactory.services()
+  static async showByUsername(
+    req: FastifyRequest<{ Params: IShowAccountByUsernameDTO }>,
+    reply: FastifyReply
+  ) {
+    const accountService = AccountFactory.services()
 
-        const { username } = req.params
-        const { account } = await accountService.showAccountByUsername({ username })
+    const { username } = req.params
+    const { account } = await accountService.showAccountByUsername({ username })
 
-        reply.send({
-            account: AccountPresenter.toHttp(account)
-        })
-    }
+    reply.send({
+      account: AccountPresenter.toHttp(account)
+    })
+  }
 
-    static async showByEmail(req: FastifyRequest<{ Params: IShowAccountByEmailDTO }>, reply: FastifyReply) {
-        const accountService = AccountFactory.services()
+  static async showByEmail(
+    req: FastifyRequest<{ Params: IShowAccountByEmailDTO }>,
+    reply: FastifyReply
+  ) {
+    const accountService = AccountFactory.services()
 
-        const { email } = req.params
-        const { account } = await accountService.showAccountByEmail({ email })
+    const { email } = req.params
+    const { account } = await accountService.showAccountByEmail({ email })
 
-        reply.send({
-            account: AccountPresenter.toHttp(account)
-        })
-    }
+    reply.send({
+      account: AccountPresenter.toHttp(account)
+    })
+  }
 
-    static async delete(req: FastifyRequest, reply: FastifyReply) {
-        const accountService = AccountFactory.services()
+  static async delete(req: FastifyRequest, reply: FastifyReply) {
+    const accountService = AccountFactory.services()
 
-        await accountService.deleteAccount({ requester: req.account })
+    await accountService.deleteAccount({ requester: req.account })
 
-        reply.send({
-            account: AccountPresenter.toHttp(req.account)
-        })
-    }
+    reply.send({
+      account: AccountPresenter.toHttp(req.account)
+    })
+  }
 }

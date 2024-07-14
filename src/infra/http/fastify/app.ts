@@ -7,4 +7,3 @@ export const app = fastify({ logger: envToLogger[env.nodeEnv] ?? true })
 
 // ERROR HANDLER
 app.setErrorHandler(fastifyErrorHandler)
-
