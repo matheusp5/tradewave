@@ -7,6 +7,9 @@ import {
   IShowAccountByUsernameDTO
 } from '@/domain/auth/dtos/account.dto'
 
+
+const accountService = AccountFactory.services()
+
 export class AccountController {
   static async showById(
     req: FastifyRequest<{ Params: IShowAccountByIdDTO }>,
@@ -26,7 +29,6 @@ export class AccountController {
     req: FastifyRequest<{ Params: IShowAccountByUsernameDTO }>,
     reply: FastifyReply
   ) {
-    const accountService = AccountFactory.services()
 
     const { username } = req.params
     const { account } = await accountService.showAccountByUsername({ username })
@@ -40,7 +42,6 @@ export class AccountController {
     req: FastifyRequest<{ Params: IShowAccountByEmailDTO }>,
     reply: FastifyReply
   ) {
-    const accountService = AccountFactory.services()
 
     const { email } = req.params
     const { account } = await accountService.showAccountByEmail({ email })
@@ -51,8 +52,6 @@ export class AccountController {
   }
 
   static async delete(req: FastifyRequest, reply: FastifyReply) {
-    const accountService = AccountFactory.services()
-
     await accountService.deleteAccount({ requester: req.account })
 
     reply.send({

@@ -14,7 +14,7 @@ export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
 
     const { account } = await authServices.verifyToken({ token: accessToken })
 
-    req['account'] = account
+    req['account'] = account;
   } catch (error: any) {
     return reply.status(401).send({ error: error.message })
   }

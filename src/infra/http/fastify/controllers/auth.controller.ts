@@ -7,6 +7,8 @@ import { AuthFactory } from '@/domain/auth/factories/auth.factory'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { AccountPresenter } from '../presenters/account.presenter'
 
+const authService = AuthFactory.services()
+
 export class AuthController {
   static async login(
     req: FastifyRequest<{ Body: ILoginWithEmailAndPasswordDTO }>,
@@ -14,7 +16,6 @@ export class AuthController {
   ) {
     const { email, password } = req.body
 
-    const authService = AuthFactory.services()
     const { account, tokens } = await authService.login({ email, password })
 
     reply.send({
@@ -27,7 +28,6 @@ export class AuthController {
     req: FastifyRequest<{ Body: IRegisterAccountDTO }>,
     reply: FastifyReply
   ) {
-    const authService = AuthFactory.services()
     const { account, tokens } = await authService.register(req.body)
 
     reply.send({
@@ -46,7 +46,6 @@ export class AuthController {
     req: FastifyRequest<{ Body: IRefreshAuthDTO }>,
     reply: FastifyReply
   ) {
-    const authService = AuthFactory.services()
     const { tokens } = await authService.refreshAuth(req.body)
 
     reply.send({

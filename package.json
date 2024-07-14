@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "test": "dotenv -e .env.test jest",
-    "prettier": "prettier --write ./src"
+    "prettier": "prettier --write ./src",
+    "dev": "dotenv -e .env.development -- ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore node_modules ./src/infra/http/fastify/main.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

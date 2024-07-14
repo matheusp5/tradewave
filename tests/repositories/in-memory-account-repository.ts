@@ -7,36 +7,36 @@ import { randomUUID } from "crypto";
 export class InMemoryAccountRepository implements IAccountRepository {
     private accounts: Account[] = []
 
-    getAll(): Promise<Account[]> {
-        return Promise.resolve(this.accounts);
+    async getAll(): Promise<Account[]> {
+        return this.accounts;
     }
 
-    getById(id: string): Promise<Account | null> {
+    async getById(id: string): Promise<Account | null> {
         const account = this.accounts.find(acc => acc.id === id);
-        return Promise.resolve(account || null);
+        return account ?? null;
     }
 
-    getByEmail(email: string): Promise<Account | null> {
+    async getByEmail(email: string): Promise<Account | null> {
         const account = this.accounts.find(acc => acc.email === email);
-        return Promise.resolve(account || null);
+        return account ?? null;
     }
 
-    getByUsername(username: string): Promise<Account | null> {
+    async getByUsername(username: string): Promise<Account | null> {
         const account = this.accounts.find(acc => acc.username === username);
-        return Promise.resolve(account || null);
+        return account ?? null;
     }
 
-    create(account: ICreateAccountRequest): Promise<Account> {
+    async create(account: ICreateAccountRequest): Promise<Account> {
         const newAccount = Account.create(generateId(), account);
         this.accounts.push(newAccount);
-        return Promise.resolve(newAccount);
+        return newAccount;
     }
 
-    deleteById(id: string): Promise<void> {
+    async deleteById(id: string): Promise<void> {
         const index = this.accounts.findIndex(acc => acc.id === id);
         if (index !== -1) {
             this.accounts.splice(index, 1);
         }
-        return Promise.resolve();
+
     }
 }

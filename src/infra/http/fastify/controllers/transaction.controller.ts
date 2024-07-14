@@ -6,6 +6,8 @@ import { TransactionFactory } from '@/domain/transaction/factories/transaction.f
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { TransactionPresenter } from '../presenters/transaction.presenter'
 
+const transactionService = TransactionFactory.services()
+
 export class TransactionController {
   static async createTransaction(
     req: FastifyRequest<{ Body: ICreateTransactionDTO }>,
@@ -13,7 +15,6 @@ export class TransactionController {
   ) {
     const { amount, email } = req.body
 
-    const transactionService = TransactionFactory.services()
     const { transaction } = await transactionService.createTransaction({
       amount,
       email,
@@ -31,7 +32,6 @@ export class TransactionController {
   ) {
     const { token } = req.params
 
-    const transactionService = TransactionFactory.services()
     const { transaction } = await transactionService.confirmTransaction({
       token,
       requester: req.account
@@ -43,7 +43,6 @@ export class TransactionController {
   }
 
   static async myTransactions(req: FastifyRequest, reply: FastifyReply) {
-    const transactionService = TransactionFactory.services()
     const { transactions } = await transactionService.myTransactions({
       requester: req.account
     })
