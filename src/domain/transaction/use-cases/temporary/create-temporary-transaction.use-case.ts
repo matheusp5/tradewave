@@ -18,9 +18,7 @@ export class CreateTemporaryTransactionUseCase implements IUseCase<ICreateTempor
 
     async execute(request: ICreateTemporaryTransactionUseCaseRequest): Promise<ICreateTemporaryTransactionUseCaseResponse> {
         const transaction = await this.temporaryTransactionRepository.createTemporaryTransaction({
-            id: generateId(),
             createdAt: new Date(),
-
             ...request,
         });
 

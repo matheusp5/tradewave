@@ -3,15 +3,15 @@ import { ICreateBlockchainTransactionRequest } from "@/domain/transaction/dto/tr
 import { Transaction } from "@/domain/transaction/entities/transaction";
 
 export class HfTransactionContract implements ITransactionContract {
-    async createTransaction(data: ICreateBlockchainTransactionRequest): Promise<Transaction> {
-        console.log("Creating transaction on Hyperledger Fabric");
+    private transactions: Transaction[] = []
 
+    async createTransaction(data: ICreateBlockchainTransactionRequest): Promise<Transaction> {
         const transaction = Transaction.create(data.id, data)
+        this.transactions.push(transaction)
         return transaction
     }
 
     async getAllTransactionsByAccountId(accountId: string): Promise<Transaction[]> {
-        console.log("Getting all transactions by account id on Hyperledger Fabric");
-        return []
+        return this.transactions.filter(transaction => transaction.payerId === accountId || transaction.payeeId === accountId)
     }
 }
