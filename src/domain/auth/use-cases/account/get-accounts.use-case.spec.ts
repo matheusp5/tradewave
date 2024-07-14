@@ -4,7 +4,7 @@ import { IAccountRepository } from '@/domain/auth/repositories/account-repositor
 import { InMemoryAccountRepository } from 'tests/repositories/in-memory-account-repository';
 import { makeAccount } from 'tests/factories/make-account';
 
-describe('GetAccountsUseCase', () => {
+describe('Get Accounts Use Case', () => {
     let getAccountsUseCase: GetAccountsUseCase;
     let accountRepository: IAccountRepository;
 
