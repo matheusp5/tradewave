@@ -10,7 +10,6 @@ export interface ICreateBlockchainTransactionRequest {
 }
 
 export interface ICreateTemporaryTransactionRequest {
-    id: string
     payerId: string
     payeeId: string
     amount: number

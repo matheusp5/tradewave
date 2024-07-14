@@ -1,3 +1,4 @@
+import { generateId } from "@/core/utils/generate-id"
 import { ICreateTemporaryTransactionRequest } from "@/domain/transaction/dto/transaction.dto"
 import { Transaction } from "@/domain/transaction/entities/transaction"
 import { ITemporaryTransactionRepository } from "@/domain/transaction/repositories/temporary-transactions-repository"
@@ -6,7 +7,7 @@ export class InMemoryTemporaryTransactionRepository implements ITemporaryTransac
     private transactions: Transaction[] = []
 
     async createTemporaryTransaction(transaction: ICreateTemporaryTransactionRequest): Promise<Transaction> {
-        const newTransaction = Transaction.create(transaction.id, {
+        const newTransaction = Transaction.create(generateId(), {
             amount: transaction.amount,
             createdAt: transaction.createdAt,
             payeeId: transaction.payeeId,
