@@ -1,6 +1,6 @@
 import { JwtEncrypter } from '@/infra/cryptography/jwt-encrypter'
 import { IEncrypter } from '../cryptography/encrypter'
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
+import { HfTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
 import { ITransactionContract } from '@/domain/transaction/blockchain/transaction-contract'
 import { ITemporaryTransactionRepository } from '@/domain/transaction/repositories/temporary-transactions-repository'
 import { InMemoryTemporaryTransactionRepository } from 'tests/repositories/in-memory-temporary-transaction-repository'

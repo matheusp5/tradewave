@@ -1,16 +1,16 @@
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
 import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetTransactionsByAccountIdUseCase } from './get-transactions-by-account-id.use-case'
 import { Transaction } from '../../entities/transaction'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
+import { EthereumTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
 
 describe('Get Transactions By Account ID Use Case', () => {
   let sut: GetTransactionsByAccountIdUseCase
   let transactionContract: ITransactionContract
 
   beforeEach(() => {
-    transactionContract = new HfTransactionContract()
+    transactionContract = new EthereumTransactionContract()
     sut = new GetTransactionsByAccountIdUseCase(transactionContract)
   })
 

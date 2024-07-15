@@ -1,7 +1,7 @@
 import { InMemoryTemporaryTransactionRepository } from 'tests/repositories/in-memory-temporary-transaction-repository'
 import { ITemporaryTransactionRepository } from '../repositories/temporary-transactions-repository'
 import { ITransactionContract } from '../blockchain/transaction-contract'
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
+import { HfTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
 import { TransactionService } from '../services/transaction.service'
 import { InMemoryAccountRepository } from 'tests/repositories/in-memory-account-repository'
 import { IAccountRepository } from '@/domain/auth/repositories/account-repository'

@@ -1,15 +1,15 @@
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
 import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetAccountBalanceUseCase } from './get-account-balance.use-case'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
+import { EthereumTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
   let transactionContract: ITransactionContract
 
   beforeEach(() => {
-    transactionContract = new HfTransactionContract()
+    transactionContract = new EthereumTransactionContract()
     sut = new GetAccountBalanceUseCase(transactionContract)
   })
 
