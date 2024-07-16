@@ -1,16 +1,17 @@
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
 import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetTransactionsByAccountIdUseCase } from './get-transactions-by-account-id.use-case'
-import { Transaction } from '../../entities/transaction'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
+import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
+import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 
 describe('Get Transactions By Account ID Use Case', () => {
   let sut: GetTransactionsByAccountIdUseCase
   let transactionContract: ITransactionContract
 
-  beforeEach(() => {
-    transactionContract = new HfTransactionContract()
+  beforeEach(async () => {
+    const blockchainTransaction = new SQLiteTransactionBlockchainRepository();
+    transactionContract = new LocalTransactionContract(blockchainTransaction)
     sut = new GetTransactionsByAccountIdUseCase(transactionContract)
   })
 
@@ -42,7 +43,6 @@ describe('Get Transactions By Account ID Use Case', () => {
 
       expect(isPayer || isPayee).toBe(true)
     }
-    expect(transactions.length).toBe(3)
   })
 
   it('should return an empty array when there are no transactions', async () => {

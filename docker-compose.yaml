@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  eventstore:
+    image: eventstore/eventstore:latest
+    container_name: eventstore
+    ports:
+      - '1113:1113'
+      - '2113:2113'

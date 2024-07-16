@@ -12,12 +12,11 @@ interface IGetAccountBalanceUseCaseResponse {
 
 export class GetAccountBalanceUseCase
   implements
-    IUseCase<
-      IGetAccountBalanceUseCaseRequest,
-      Promise<IGetAccountBalanceUseCaseResponse>
-    >
-{
-  constructor(private transactionContract: ITransactionContract) {}
+  IUseCase<
+    IGetAccountBalanceUseCaseRequest,
+    Promise<IGetAccountBalanceUseCaseResponse>
+  > {
+  constructor(private transactionContract: ITransactionContract) { }
 
   async execute(
     request: IGetAccountBalanceUseCaseRequest
@@ -26,6 +25,7 @@ export class GetAccountBalanceUseCase
       await this.transactionContract.getAllTransactionsByAccountId(
         request.accountId
       )
+
     const transactionsNumber = transactions.length
 
     const balance = transactions.reduce((acc, transaction) => {

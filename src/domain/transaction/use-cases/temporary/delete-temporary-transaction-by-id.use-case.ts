@@ -16,14 +16,13 @@ interface IDeleteTemporaryTransactionByIdUseCaseResponse {
 
 export class DeleteTemporaryTransactionByIdUseCase
   implements
-    IUseCase<
-      IDeleteTemporaryTransactionByIdUseCaseRequest,
-      Promise<IDeleteTemporaryTransactionByIdUseCaseResponse>
-    >
-{
+  IUseCase<
+    IDeleteTemporaryTransactionByIdUseCaseRequest,
+    Promise<IDeleteTemporaryTransactionByIdUseCaseResponse>
+  > {
   constructor(
     private temporaryTransactionRepository: ITemporaryTransactionRepository
-  ) {}
+  ) { }
 
   async execute({
     transactionId,
