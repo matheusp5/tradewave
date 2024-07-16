@@ -16,6 +16,10 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
         this.createGenesisBlock();
     }
 
+    async clearTables(): Promise<void> {
+        this.db.exec("DELETE FROM blocks");
+    }
+
     private createTables(): void {
         this.db.exec(`
             CREATE TABLE IF NOT EXISTS blocks (

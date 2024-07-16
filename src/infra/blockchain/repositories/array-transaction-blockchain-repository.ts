@@ -8,6 +8,10 @@ export class ArrayTransactionBlockchainRepository implements ITransactionBlockch
         this.createGenesisBlock()
     }
 
+    async clearTables(): Promise<void> {
+        this.blocks = []
+    }
+
     async addBlock(block: IBlock): Promise<IBlock> {
         this.blocks.push(block);
         return block

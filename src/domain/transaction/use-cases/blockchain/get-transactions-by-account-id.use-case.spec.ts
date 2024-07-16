@@ -5,6 +5,7 @@ import { generateId } from '@/core/utils/generate-id'
 import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
 import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 import { ITransactionBlockchainRepository } from '../../repositories/transaction-blockchain-repository'
+import fs from 'fs'
 
 describe('Get Transactions By Account ID Use Case', () => {
   let sut: GetTransactionsByAccountIdUseCase
@@ -15,6 +16,11 @@ describe('Get Transactions By Account ID Use Case', () => {
     blockchainRepository = new SQLiteTransactionBlockchainRepository();
     transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new GetTransactionsByAccountIdUseCase(transactionContract)
+    await blockchainRepository.clearTables()
+  })
+
+  afterEach(async () => {
+    await blockchainRepository.clearTables()
   })
 
   it('should get transactions by account id', async () => {

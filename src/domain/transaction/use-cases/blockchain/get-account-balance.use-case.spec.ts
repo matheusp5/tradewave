@@ -5,6 +5,7 @@ import { generateId } from '@/core/utils/generate-id'
 import { ITransactionBlockchainRepository } from '../../repositories/transaction-blockchain-repository'
 import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
 import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
+import fs from 'fs'
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
@@ -15,6 +16,11 @@ describe('Get Account Balance Use Case', () => {
     blockchainRepository = new SQLiteTransactionBlockchainRepository();
     transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new GetAccountBalanceUseCase(transactionContract)
+    await blockchainRepository.clearTables()
+  })
+
+  afterEach(async () => {
+    await blockchainRepository.clearTables()
   })
 
   it('should calculate the account balance correctly when there are transactions', async () => {
