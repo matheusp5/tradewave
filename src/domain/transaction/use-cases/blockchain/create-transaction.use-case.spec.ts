@@ -3,14 +3,17 @@ import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { Transaction } from '../../entities/transaction'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
-import { EthereumTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
+import { EventStoreDBClient } from '@eventstore/db-client'
+import { ArrayTransactionBlockchainRepository } from '@/infra/blockchain/repositories/array-transaction-blockchain-repository'
+import { ArrayTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 
 describe('Create Transaction (Blockchain) Use Case', () => {
   let sut: CreateTransactionUseCase
   let transactionContract: ITransactionContract
 
-  beforeEach(() => {
-    transactionContract = new EthereumTransactionContract()
+  beforeEach(async () => {
+    const blockchainRepository = new ArrayTransactionBlockchainRepository();
+    transactionContract = new ArrayTransactionContract(blockchainRepository)
     sut = new CreateTransactionUseCase(transactionContract)
   })
 

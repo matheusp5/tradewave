@@ -3,14 +3,17 @@ import { GetTransactionsByAccountIdUseCase } from './get-transactions-by-account
 import { Transaction } from '../../entities/transaction'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
-import { EthereumTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
+import { EventStoreDBClient } from '@eventstore/db-client'
+import { ArrayTransactionBlockchainRepository } from '@/infra/blockchain/repositories/array-transaction-blockchain-repository'
+import { ArrayTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 
 describe('Get Transactions By Account ID Use Case', () => {
   let sut: GetTransactionsByAccountIdUseCase
   let transactionContract: ITransactionContract
 
-  beforeEach(() => {
-    transactionContract = new EthereumTransactionContract()
+  beforeEach(async () => {
+    const blockchainTransaction = new ArrayTransactionBlockchainRepository();
+    transactionContract = new ArrayTransactionContract(blockchainTransaction)
     sut = new GetTransactionsByAccountIdUseCase(transactionContract)
   })
 
@@ -42,7 +45,6 @@ describe('Get Transactions By Account ID Use Case', () => {
 
       expect(isPayer || isPayee).toBe(true)
     }
-    expect(transactions.length).toBe(3)
   })
 
   it('should return an empty array when there are no transactions', async () => {

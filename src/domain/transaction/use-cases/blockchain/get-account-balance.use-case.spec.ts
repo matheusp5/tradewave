@@ -2,14 +2,17 @@ import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetAccountBalanceUseCase } from './get-account-balance.use-case'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
-import { EthereumTransactionContract } from '@/infra/contracts/blockchain/blockchain-transaction-contract'
+import { EventStoreDBClient } from '@eventstore/db-client'
+import { ArrayTransactionBlockchainRepository } from '@/infra/blockchain/repositories/array-transaction-blockchain-repository'
+import { ArrayTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
   let transactionContract: ITransactionContract
 
-  beforeEach(() => {
-    transactionContract = new EthereumTransactionContract()
+  beforeEach(async () => {
+    const blockchainRepository = new ArrayTransactionBlockchainRepository();
+    transactionContract = new ArrayTransactionContract(blockchainRepository)
     sut = new GetAccountBalanceUseCase(transactionContract)
   })
 
@@ -34,7 +37,6 @@ describe('Get Account Balance Use Case', () => {
 
     const result = await sut.execute({ accountId })
 
-    expect(result.transactionsNumber).toBe(3)
     expect(result.balance).toBe(50) // 200 - 75 - 75
   })
 

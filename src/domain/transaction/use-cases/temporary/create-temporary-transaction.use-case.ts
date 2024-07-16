@@ -15,14 +15,13 @@ interface ICreateTemporaryTransactionUseCaseResponse {
 
 export class CreateTemporaryTransactionUseCase
   implements
-    IUseCase<
-      ICreateTemporaryTransactionUseCaseRequest,
-      Promise<ICreateTemporaryTransactionUseCaseResponse>
-    >
-{
+  IUseCase<
+    ICreateTemporaryTransactionUseCaseRequest,
+    Promise<ICreateTemporaryTransactionUseCaseResponse>
+  > {
   constructor(
     private temporaryTransactionRepository: ITemporaryTransactionRepository
-  ) {}
+  ) { }
 
   async execute(
     request: ICreateTemporaryTransactionUseCaseRequest
