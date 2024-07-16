@@ -22,4 +22,5 @@ export interface ITransactionBlockchainRepository {
     getAllBlocks(): Promise<IBlock[]>
     getBlockByHash(hash: string): Promise<IBlock | null>
     getLastBlock(): Promise<IBlock>
+    clearTables(): Promise<void>
 }
