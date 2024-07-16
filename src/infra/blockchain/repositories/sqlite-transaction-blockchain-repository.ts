@@ -1,6 +1,12 @@
 import sqlite3, { Database } from 'better-sqlite3';
 import { generateHash, IBlock, ITransactionBlockchainRepository } from "@/domain/transaction/repositories/transaction-blockchain-repository";
 
+interface IBlockRow {
+    data: string;
+    hash: string;
+    previousHash: string;
+}
+
 export class SQLiteTransactionBlockchainRepository implements ITransactionBlockchainRepository {
     private db: Database;
 
@@ -48,8 +54,8 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
     }
 
     async getAllBlocks(): Promise<IBlock[]> {
-        const rows: any = this.db.prepare("SELECT data, hash, previousHash FROM blocks").all();
-        return rows.map((row: any) => ({
+        const rows = this.db.prepare("SELECT data, hash, previousHash FROM blocks").all() as IBlockRow[];
+        return rows.map((row: IBlockRow) => ({
             data: row.data,
             hash: row.hash,
             previousHash: row.previousHash
@@ -57,7 +63,7 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
     }
 
     async getBlockByHash(hash: string): Promise<IBlock | null> {
-        const row: any = this.db.prepare("SELECT data, hash, previousHash FROM blocks WHERE hash = ?").get(hash);
+        const row = this.db.prepare("SELECT data, hash, previousHash FROM blocks WHERE hash = ?").get(hash) as IBlockRow;
         if (row) {
             return {
                 data: row.data,
@@ -69,7 +75,7 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
     }
 
     async getLastBlock(): Promise<IBlock> {
-        const row: any = this.db.prepare("SELECT data, hash, previousHash FROM blocks ORDER BY id DESC LIMIT 1").get();
+        const row = this.db.prepare("SELECT data, hash, previousHash FROM blocks ORDER BY id DESC LIMIT 1").get() as IBlockRow;
         return {
             data: row.data,
             hash: row.hash,

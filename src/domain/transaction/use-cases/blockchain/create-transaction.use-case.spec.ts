@@ -4,13 +4,15 @@ import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
 import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
 import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
+import { ITransactionBlockchainRepository } from '../../repositories/transaction-blockchain-repository'
 
 describe('Create Transaction (Blockchain) Use Case', () => {
   let sut: CreateTransactionUseCase
+  let blockchainRepository: ITransactionBlockchainRepository
   let transactionContract: ITransactionContract
 
   beforeEach(async () => {
-    const blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    blockchainRepository = new SQLiteTransactionBlockchainRepository();
     transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new CreateTransactionUseCase(transactionContract)
   })
