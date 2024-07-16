@@ -19,7 +19,7 @@ describe('Get Account Balance Use Case', () => {
 
   it('should calculate the account balance correctly when there are transactions', async () => {
     const accountId = 'testAccountId'
-    const transactions = [
+    const transactionPayloads = [
       makeTransaction({ amount: 100 }),
       makeTransaction({ payeeId: accountId, amount: 200 }),
       makeTransaction({ payerId: accountId, amount: 75 }),
@@ -27,16 +27,15 @@ describe('Get Account Balance Use Case', () => {
       makeTransaction({ payerId: accountId, amount: 75 })
     ]
 
-    for await (const transaction of transactions) {
-      await transactionContract.createTransaction({
-        id: generateId(),
-        amount: transaction.amount,
-        payerId: transaction.payerId,
-        payeeId: transaction.payeeId,
-        createdAt: transaction.createdAt,
-        verifiedAt: new Date()
-      })
-    }
+    await Promise.all(
+      transactionPayloads.map((transaction) =>
+        transactionContract.createTransaction({
+          id: generateId(),
+          ...transaction,
+          verifiedAt: new Date()
+        })
+      )
+    )
 
     const result = await sut.execute({ accountId })
 
