@@ -2,17 +2,18 @@ import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetAccountBalanceUseCase } from './get-account-balance.use-case'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
-import { EventStoreDBClient } from '@eventstore/db-client'
-import { ArrayTransactionBlockchainRepository } from '@/infra/blockchain/repositories/array-transaction-blockchain-repository'
-import { ArrayTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
+import { ITransactionBlockchainRepository } from '../../repositories/transaction-blockchain-repository'
+import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
+import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
+  let blockchainRepository: ITransactionBlockchainRepository
   let transactionContract: ITransactionContract
 
   beforeEach(async () => {
-    const blockchainRepository = new ArrayTransactionBlockchainRepository();
-    transactionContract = new ArrayTransactionContract(blockchainRepository)
+    blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new GetAccountBalanceUseCase(transactionContract)
   })
 
@@ -25,15 +26,17 @@ describe('Get Account Balance Use Case', () => {
       makeTransaction({ amount: 75 }),
       makeTransaction({ payerId: accountId, amount: 75 })
     ]
-    await Promise.all(
-      transactions.map((transaction) =>
-        transactionContract.createTransaction({
-          ...transaction,
-          id: generateId(),
-          verifiedAt: new Date()
-        })
-      )
-    )
+
+    for await (const transaction of transactions) {
+      await transactionContract.createTransaction({
+        id: generateId(),
+        amount: transaction.amount,
+        payerId: transaction.payerId,
+        payeeId: transaction.payeeId,
+        createdAt: transaction.createdAt,
+        verifiedAt: new Date()
+      })
+    }
 
     const result = await sut.execute({ accountId })
 

@@ -3,8 +3,9 @@ import { ICreateBlockchainTransactionRequest } from "@/domain/transaction/dto/tr
 import { Transaction } from "@/domain/transaction/entities/transaction";
 import { generateId } from "@/core/utils/generate-id";
 import { generateHash, IBlock, ITransactionBlockchainRepository } from "@/domain/transaction/repositories/transaction-blockchain-repository";
+import { TransactionMapper } from "../mappers/transaction-mapper";
 
-export class ArrayTransactionContract implements ITransactionContract {
+export class LocalTransactionContract implements ITransactionContract {
     constructor(
         private blockchainRepository: ITransactionBlockchainRepository
     ) { }
@@ -21,9 +22,9 @@ export class ArrayTransactionContract implements ITransactionContract {
         const lastBlock = await this.blockchainRepository.getLastBlock();
 
         const newBlock: IBlock = {
-            data: JSON.stringify(transaction),
+            data: JSON.stringify(TransactionMapper.toPersistence(transaction)),
             previousHash: lastBlock.hash,
-            hash: generateHash(JSON.stringify(transaction) + lastBlock.hash)
+            hash: generateHash(JSON.stringify(TransactionMapper.toPersistence(transaction)) + lastBlock.hash)
         };
 
         await this.blockchainRepository.addBlock(newBlock);
@@ -38,7 +39,7 @@ export class ArrayTransactionContract implements ITransactionContract {
         for (const block of blocks) {
             const data = block.data;
             if (data !== "genesis") {
-                const transaction: Transaction = JSON.parse(data);
+                const transaction = TransactionMapper.toDomain(JSON.parse(data));
                 if (transaction.payerId === accountId || transaction.payeeId === accountId) {
                     transactions.push(transaction);
                 }

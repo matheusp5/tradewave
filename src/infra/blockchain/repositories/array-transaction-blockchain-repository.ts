@@ -1,4 +1,3 @@
-import { Transaction } from "@/domain/transaction/entities/transaction";
 import { generateHash, IBlock, ITransactionBlockchainRepository } from "@/domain/transaction/repositories/transaction-blockchain-repository";
 
 

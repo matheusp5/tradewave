@@ -26,8 +26,6 @@ export class GetAccountBalanceUseCase
         request.accountId
       )
 
-    console.log({ transactions })
-
     const transactionsNumber = transactions.length
 
     const balance = transactions.reduce((acc, transaction) => {

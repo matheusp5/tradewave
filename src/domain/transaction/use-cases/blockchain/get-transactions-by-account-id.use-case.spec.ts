@@ -1,19 +1,17 @@
 import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetTransactionsByAccountIdUseCase } from './get-transactions-by-account-id.use-case'
-import { Transaction } from '../../entities/transaction'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
-import { EventStoreDBClient } from '@eventstore/db-client'
-import { ArrayTransactionBlockchainRepository } from '@/infra/blockchain/repositories/array-transaction-blockchain-repository'
-import { ArrayTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
+import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
+import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 
 describe('Get Transactions By Account ID Use Case', () => {
   let sut: GetTransactionsByAccountIdUseCase
   let transactionContract: ITransactionContract
 
   beforeEach(async () => {
-    const blockchainTransaction = new ArrayTransactionBlockchainRepository();
-    transactionContract = new ArrayTransactionContract(blockchainTransaction)
+    const blockchainTransaction = new SQLiteTransactionBlockchainRepository();
+    transactionContract = new LocalTransactionContract(blockchainTransaction)
     sut = new GetTransactionsByAccountIdUseCase(transactionContract)
   })
 
