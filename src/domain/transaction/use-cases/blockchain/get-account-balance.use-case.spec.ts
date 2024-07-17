@@ -6,7 +6,7 @@ import { ITransactionBlockchainRepository } from '../../repositories/transaction
 import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
 import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 import fs from 'fs'
-import {faker} from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
@@ -14,7 +14,7 @@ describe('Get Account Balance Use Case', () => {
   let transactionContract: ITransactionContract
 
   beforeEach(async () => {
-    blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    blockchainRepository = new SQLiteTransactionBlockchainRepository("blockchain-test.db");
     await blockchainRepository.clearTables()
     await blockchainRepository.initialize()
     transactionContract = new LocalTransactionContract(blockchainRepository)

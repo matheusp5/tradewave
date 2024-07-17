@@ -14,7 +14,7 @@ export class TransactionValidation {
 
   static confirmTransaction() {
     return object().shape({
-      body: object().shape({
+      query: object().shape({
         token: string().required('Token é obrigatório')
       })
     })

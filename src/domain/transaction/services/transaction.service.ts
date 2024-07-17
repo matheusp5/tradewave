@@ -77,8 +77,8 @@ export class TransactionService {
     const { balance: payerBalance } =
       await this.getAccountBalanceUseCase.execute({ accountId: payer.id })
 
-    if (payerBalance < request.amount)
-      throw new BadRequestError('Saldo insuficiente.')
+    // if (payerBalance < request.amount)
+    //   throw new BadRequestError('Saldo insuficiente.')
 
     const { account: payee } = await this.getAccountByEmailUseCase.execute({
       email: request.email

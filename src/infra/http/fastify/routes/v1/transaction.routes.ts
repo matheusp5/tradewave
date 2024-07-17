@@ -7,7 +7,7 @@ import { TransactionController } from '../../controllers/transaction.controller'
 export async function transactionRoutes(app: FastifyInstance) {
   app.post(
     '/create-transaction',
-    { preHandler: httpValidate(TransactionValidation.createTransaction()) },
+    { preHandler: [authenticate, httpValidate(TransactionValidation.createTransaction())] },
     TransactionController.createTransaction
   )
   app.get(
@@ -15,9 +15,9 @@ export async function transactionRoutes(app: FastifyInstance) {
     { preHandler: [authenticate] },
     TransactionController.myTransactions
   )
-  app.post(
+  app.get(
     '/confirm-transaction',
-    { preHandler: httpValidate(TransactionValidation.confirmTransaction()) },
+    // { preHandler: httpValidate(TransactionValidation.confirmTransaction()) },
     TransactionController.confirmTransaction
   )
 }

@@ -10,8 +10,8 @@ interface IBlockRow {
 export class SQLiteTransactionBlockchainRepository implements ITransactionBlockchainRepository {
     private db: Database;
 
-    constructor() {
-        this.db = new sqlite3('blockchain.db');
+    constructor(databaseName?: string) {
+        this.db = new sqlite3(databaseName ?? 'blockchain.db');
     }
 
     async initialize(): Promise<void> {
