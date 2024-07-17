@@ -17,7 +17,7 @@ export async function transactionRoutes(app: FastifyInstance) {
   )
   app.get(
     '/confirm-transaction',
-    // { preHandler: httpValidate(TransactionValidation.confirmTransaction()) },
+    { preHandler: [authenticate] },
     TransactionController.confirmTransaction
   )
 }

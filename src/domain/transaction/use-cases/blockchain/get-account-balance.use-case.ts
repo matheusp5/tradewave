@@ -6,7 +6,7 @@ interface IGetAccountBalanceUseCaseRequest {
 }
 
 interface IGetAccountBalanceUseCaseResponse {
-  transactionsNumber: number
+  transactionsCount: number
   balance: number
 }
 
@@ -26,7 +26,7 @@ export class GetAccountBalanceUseCase
         request.accountId
       )
 
-    const transactionsNumber = transactions.length
+    const transactionsCount = transactions.length
 
     const balance = transactions.reduce((acc, transaction) => {
       if (transaction.payerId === request.accountId) {
@@ -37,7 +37,7 @@ export class GetAccountBalanceUseCase
     }, 0)
 
     return {
-      transactionsNumber,
+      transactionsCount,
       balance
     }
   }

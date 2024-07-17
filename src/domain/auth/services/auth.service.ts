@@ -130,10 +130,8 @@ export class AuthService {
       accountId: requester.id
     })
     return {
-      account: {
-        ...requester,
-        ...balance
-      }
+      account: requester,
+      balance
     }
   }
 }

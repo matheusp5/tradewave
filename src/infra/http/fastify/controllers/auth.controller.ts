@@ -6,6 +6,7 @@ import {
 import { AuthFactory } from '@/domain/auth/factories/auth.factory'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { AccountPresenter } from '../presenters/account.presenter'
+import { TransactionFactory } from "@/domain/transaction/factories/transaction.factory";
 
 const authService = AuthFactory.services()
 
@@ -37,8 +38,10 @@ export class AuthController {
   }
 
   static async me(req: FastifyRequest, reply: FastifyReply) {
+    const {account, balance } = await authService.me({requester: req.account})
     reply.send({
-      account: AccountPresenter.toHttp(req.account)
+      ...AccountPresenter.toHttp(account),
+      ...balance
     })
   }
 
