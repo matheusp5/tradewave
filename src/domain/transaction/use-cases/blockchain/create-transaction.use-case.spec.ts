@@ -14,9 +14,10 @@ describe('Create Transaction (Blockchain) Use Case', () => {
 
   beforeEach(async () => {
     blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    await blockchainRepository.clearTables()
+    await blockchainRepository.initialize()
     transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new CreateTransactionUseCase(transactionContract)
-    await blockchainRepository.clearTables()
   })
 
   afterEach(async () => {

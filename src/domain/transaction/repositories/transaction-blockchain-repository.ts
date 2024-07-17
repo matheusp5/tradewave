@@ -17,6 +17,7 @@ export const generateHash = (data: string): string => {
 
 
 export interface ITransactionBlockchainRepository {
+    initialize(): Promise<void>
     addBlock(block: IBlock): Promise<IBlock>
     createGenesisBlock(): Promise<IBlock>
     getAllBlocks(): Promise<IBlock[]>

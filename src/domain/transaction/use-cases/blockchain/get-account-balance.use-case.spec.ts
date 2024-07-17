@@ -6,6 +6,7 @@ import { ITransactionBlockchainRepository } from '../../repositories/transaction
 import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
 import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 import fs from 'fs'
+import {faker} from "@faker-js/faker";
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
@@ -14,9 +15,10 @@ describe('Get Account Balance Use Case', () => {
 
   beforeEach(async () => {
     blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    await blockchainRepository.clearTables()
+    await blockchainRepository.initialize()
     transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new GetAccountBalanceUseCase(transactionContract)
-    await blockchainRepository.clearTables()
   })
 
   afterEach(async () => {
@@ -24,7 +26,7 @@ describe('Get Account Balance Use Case', () => {
   })
 
   it('should calculate the account balance correctly when there are transactions', async () => {
-    const accountId = 'testAccountId'
+    const accountId = faker.database.mongodbObjectId()
     const transactionPayloads = [
       makeTransaction({ amount: 100 }),
       makeTransaction({ payeeId: accountId, amount: 200 }),

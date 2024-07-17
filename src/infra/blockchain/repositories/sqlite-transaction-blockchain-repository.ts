@@ -12,12 +12,22 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
 
     constructor() {
         this.db = new sqlite3('blockchain.db');
-        this.createTables();
-        this.createGenesisBlock();
+    }
+
+    async initialize(): Promise<void> {
+        await this.createTables();
+        await this.createGenesisBlock();
     }
 
     async clearTables(): Promise<void> {
-        this.db.exec("DELETE FROM blocks");
+        try {
+            const deleteStmt = this.db.prepare("DELETE FROM blocks");
+            this.db.transaction(() => {
+                deleteStmt.run();
+            })();
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     private createTables(): void {
@@ -41,7 +51,7 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
     }
 
     async createGenesisBlock(): Promise<IBlock> {
-        const exists = this.db.prepare("SELECT 1 FROM blocks WHERE id = 1").get();
+        const exists = this.db.prepare("SELECT 1 FROM blocks WHERE data = 'genesis'").get();
         if (exists) {
             return (await this.getBlockByHash(generateHash("genesis"))) as IBlock;
         }
@@ -59,11 +69,14 @@ export class SQLiteTransactionBlockchainRepository implements ITransactionBlockc
 
     async getAllBlocks(): Promise<IBlock[]> {
         const rows = this.db.prepare("SELECT data, hash, previousHash FROM blocks").all() as IBlockRow[];
-        return rows.map((row: IBlockRow) => ({
-            data: row.data,
-            hash: row.hash,
-            previousHash: row.previousHash
-        }));
+        if (rows) {
+            return rows.map((row: IBlockRow) => ({
+                data: row.data,
+                hash: row.hash,
+                previousHash: row.previousHash
+            }));
+        }
+        return []
     }
 
     async getBlockByHash(hash: string): Promise<IBlock | null> {

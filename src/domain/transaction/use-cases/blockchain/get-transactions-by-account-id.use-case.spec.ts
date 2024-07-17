@@ -14,9 +14,10 @@ describe('Get Transactions By Account ID Use Case', () => {
 
   beforeEach(async () => {
     blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    await blockchainRepository.clearTables()
+    await blockchainRepository.initialize()
     transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new GetTransactionsByAccountIdUseCase(transactionContract)
-    await blockchainRepository.clearTables()
   })
 
   afterEach(async () => {
