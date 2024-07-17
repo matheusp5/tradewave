@@ -26,7 +26,7 @@ export class MongooseAccountRepository implements IAccountRepository {
     }
 
     async create(account: ICreateAccountRequest): Promise<Account> {
-        const createdAccount = await AccountModel.create(account);
+        const createdAccount = await AccountModel.create({ ...account, password: account.password.hash });
         return MongooseAccountMapper.toDomain(createdAccount);
     }
 
