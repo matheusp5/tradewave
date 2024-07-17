@@ -1,21 +1,32 @@
 import { CreateTransactionUseCase } from './create-transaction.use-case'
 import { ITransactionContract } from '../../blockchain/transaction-contract'
-import { Transaction } from '../../entities/transaction'
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
+import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
+import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
+import { ITransactionBlockchainRepository } from '../../repositories/transaction-blockchain-repository'
+import fs from 'fs'
 
 describe('Create Transaction (Blockchain) Use Case', () => {
   let sut: CreateTransactionUseCase
+  let blockchainRepository: ITransactionBlockchainRepository
   let transactionContract: ITransactionContract
 
-  beforeEach(() => {
-    transactionContract = new HfTransactionContract()
+  beforeEach(async () => {
+    blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new CreateTransactionUseCase(transactionContract)
+    await blockchainRepository.clearTables()
+  })
+
+  afterEach(async () => {
+    await blockchainRepository.clearTables()
   })
 
   it('should create a transaction', async () => {
-    const transactionPayload = makeTransaction()
+    const transactionPayload = makeTransaction({
+      amount: 200
+    })
 
     const { transaction } = await sut.execute({
       id: generateId(),

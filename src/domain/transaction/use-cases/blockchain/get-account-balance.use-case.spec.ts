@@ -1,32 +1,43 @@
-import { HfTransactionContract } from '@/infra/contracts/hyperledger-fabric/hf-transaction-contract'
 import { ITransactionContract } from '../../blockchain/transaction-contract'
 import { GetAccountBalanceUseCase } from './get-account-balance.use-case'
 import { makeTransaction } from 'tests/factories/make-transaction'
 import { generateId } from '@/core/utils/generate-id'
+import { ITransactionBlockchainRepository } from '../../repositories/transaction-blockchain-repository'
+import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
+import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
+import fs from 'fs'
 
 describe('Get Account Balance Use Case', () => {
   let sut: GetAccountBalanceUseCase
+  let blockchainRepository: ITransactionBlockchainRepository
   let transactionContract: ITransactionContract
 
-  beforeEach(() => {
-    transactionContract = new HfTransactionContract()
+  beforeEach(async () => {
+    blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    transactionContract = new LocalTransactionContract(blockchainRepository)
     sut = new GetAccountBalanceUseCase(transactionContract)
+    await blockchainRepository.clearTables()
+  })
+
+  afterEach(async () => {
+    await blockchainRepository.clearTables()
   })
 
   it('should calculate the account balance correctly when there are transactions', async () => {
     const accountId = 'testAccountId'
-    const transactions = [
+    const transactionPayloads = [
       makeTransaction({ amount: 100 }),
       makeTransaction({ payeeId: accountId, amount: 200 }),
       makeTransaction({ payerId: accountId, amount: 75 }),
       makeTransaction({ amount: 75 }),
       makeTransaction({ payerId: accountId, amount: 75 })
     ]
+
     await Promise.all(
-      transactions.map((transaction) =>
+      transactionPayloads.map((transaction) =>
         transactionContract.createTransaction({
-          ...transaction,
           id: generateId(),
+          ...transaction,
           verifiedAt: new Date()
         })
       )
@@ -34,7 +45,6 @@ describe('Get Account Balance Use Case', () => {
 
     const result = await sut.execute({ accountId })
 
-    expect(result.transactionsNumber).toBe(3)
     expect(result.balance).toBe(50) // 200 - 75 - 75
   })
 

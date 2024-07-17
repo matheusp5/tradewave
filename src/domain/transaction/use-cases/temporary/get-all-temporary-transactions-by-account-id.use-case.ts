@@ -12,14 +12,13 @@ interface IGetAllTemporaryTransactionsByAccountIdUseCaseResponse {
 
 export class GetAllTemporaryTransactionsByAccountIdUseCase
   implements
-    IUseCase<
-      IGetAllTemporaryTransactionsByAccountIdUseCaseRequest,
-      Promise<IGetAllTemporaryTransactionsByAccountIdUseCaseResponse>
-    >
-{
+  IUseCase<
+    IGetAllTemporaryTransactionsByAccountIdUseCaseRequest,
+    Promise<IGetAllTemporaryTransactionsByAccountIdUseCaseResponse>
+  > {
   constructor(
     private temporaryTransactionRepository: ITemporaryTransactionRepository
-  ) {}
+  ) { }
 
   async execute({
     accountId
