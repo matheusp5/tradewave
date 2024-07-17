@@ -5,32 +5,37 @@ import {
 import { TransactionFactory } from '@/domain/transaction/factories/transaction.factory'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { TransactionPresenter } from '../presenters/transaction.presenter'
+import { Account } from "@/domain/auth/entities/account";
+const transactionServicePromise = TransactionFactory.services()
 
-const transactionService = TransactionFactory.services()
 
 export class TransactionController {
+
   static async createTransaction(
     req: FastifyRequest<{ Body: ICreateTransactionDTO }>,
     reply: FastifyReply
   ) {
     const { amount, email } = req.body
+    const transactionService = await transactionServicePromise
 
-    const { transaction } = await transactionService.createTransaction({
+    const { transaction, confirmTransactionToken } = await transactionService.createTransaction({
       amount,
       email,
       requester: req.account
     })
 
     reply.send({
-      transaction: TransactionPresenter.toHttp(transaction)
+      transaction: TransactionPresenter.toHttp(transaction),
+      confirmTransactionToken
     })
   }
 
   static async confirmTransaction(
-    req: FastifyRequest<{ Params: IConfirmTransactionDTO }>,
+    req: FastifyRequest<{ Querystring: IConfirmTransactionDTO }>,
     reply: FastifyReply
   ) {
-    const { token } = req.params
+    const transactionService = await transactionServicePromise
+    const { token } = req.query
 
     const { transaction } = await transactionService.confirmTransaction({
       token,
@@ -43,6 +48,7 @@ export class TransactionController {
   }
 
   static async myTransactions(req: FastifyRequest, reply: FastifyReply) {
+    const transactionService = await transactionServicePromise
     const { transactions } = await transactionService.myTransactions({
       requester: req.account
     })

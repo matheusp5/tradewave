@@ -13,7 +13,7 @@ describe('Create Transaction (Blockchain) Use Case', () => {
   let transactionContract: ITransactionContract
 
   beforeEach(async () => {
-    blockchainRepository = new SQLiteTransactionBlockchainRepository();
+    blockchainRepository = new SQLiteTransactionBlockchainRepository("blockchain-test.db");
     await blockchainRepository.clearTables()
     await blockchainRepository.initialize()
     transactionContract = new LocalTransactionContract(blockchainRepository)

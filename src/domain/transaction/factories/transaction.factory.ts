@@ -9,16 +9,18 @@ import { IEncrypter } from '@/domain/auth/cryptography/encrypter'
 import { LocalTransactionContract } from '@/infra/blockchain/contracts/array-transaction-contract'
 import { SQLiteTransactionBlockchainRepository } from '@/infra/blockchain/repositories/sqlite-transaction-blockchain-repository'
 import { ITransactionBlockchainRepository } from '../repositories/transaction-blockchain-repository'
+import { MongooseAccountRepository } from '@/infra/database/mongoose/repositories/mongoose-account.repository'
 
 export class TransactionFactory {
-  static services() {
+  static async services() {
     const temporaryTransactionRepository: ITemporaryTransactionRepository =
       new InMemoryTemporaryTransactionRepository()
     const blockchainRepository: ITransactionBlockchainRepository = new SQLiteTransactionBlockchainRepository();
+    await blockchainRepository.initialize()
     const transactionContract: ITransactionContract =
       new LocalTransactionContract(blockchainRepository)
     const accountRepository: IAccountRepository =
-      new InMemoryAccountRepository()
+      new MongooseAccountRepository()
     const encrypter: IEncrypter = new JwtEncrypter()
 
     const transactionService = new TransactionService(
