@@ -5,8 +5,8 @@ import { ITransactionContract } from '@/domain/transaction/blockchain/transactio
 import { ITemporaryTransactionRepository } from '@/domain/transaction/repositories/temporary-transactions-repository'
 import { InMemoryTemporaryTransactionRepository } from 'tests/repositories/in-memory-temporary-transaction-repository'
 import { AuthService } from '../services/auth.service'
-import { InMemoryAccountRepository } from 'tests/repositories/in-memory-account-repository'
 import { IAccountRepository } from '../repositories/account-repository'
+import { MongooseAccountRepository } from '@/infra/database/mongoose/repositories/mongoose-account.repository'
 
 export class AuthFactory {
   static services() {
@@ -14,7 +14,7 @@ export class AuthFactory {
     const transactionContract: ITransactionContract =
       new HfTransactionContract()
     const accountRepository: IAccountRepository =
-      new InMemoryAccountRepository()
+      new MongooseAccountRepository()
 
     const authService = new AuthService(
       encrypter,
